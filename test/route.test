@@ -1,0 +1,96 @@
+
+
+include
+	.inject('/src/utils/path.js',
+			'/src/utils/query.js',
+			'/src/route/parse.js',
+			'/src/route/match.js',
+			'/src/route/Route.js')
+	.done(function() {
+		
+
+	function check(definition, data) {
+		var route = new Route(definition),
+			matches = data.match,
+			falsies = data.fail;
+		
+		if (matches) {
+			for (var i = 0, x, y, matched, imax = matches.length; i < imax; i++){
+				x = matches[i];
+				
+				if (typeof x === 'string') {
+					y = 0;
+				}else{
+					y = x[1];
+					x = x[0];
+				}
+				
+				matched = route_isMatch(x, route);
+				eq(matched, true, x);
+				
+				if (matched && y) {
+					deepEq(y, route_parsePath(route, x));
+				}
+			}
+		}
+		
+		if (falsies) {
+			for (var i = 0, x, imax = falsies.length; i < imax; i++){
+				x = falsies[i];
+				eq(route_isMatch(x, route), false, x);
+			}
+		}
+	}
+
+
+	UTest({
+		
+		'simple': function(){
+				check('/user/:id', {
+					match: [
+						['/user/20', {id: 20}],
+						['/user/bob/', {id: 'bob'}],
+						['user/bob/?age=27', {id: 'bob', age: 27}],
+						['user/bob?age=27', {id: 'bob', age: 27}]
+					],
+					fail: [
+						'/user',
+						'/user/',
+						'/users/10',
+						'/x/user/20'
+					]
+				});
+				
+				check('/:page/:tab/:anchor', {
+					match: [
+						['/mask/api/simple', { page: 'mask', tab: 'api', anchor: 'simple' }],
+					]
+				});
+		},
+		'strict': function(){
+			check('!/user/:id', {
+				match: [
+					'/user/20', 
+					['/user/20?some=value', {id: 20, some: 'value' }]
+				],
+				fail: [
+					'/user/20/some'
+				]
+			});
+			
+			check('!/', {
+				match:['/'],
+				fail: ['/tv']
+			});
+		},
+		
+		'query': function(){
+			check('/user/:id?')
+		}
+		
+	});
+	
+	
+	
+
+});

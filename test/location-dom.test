@@ -1,0 +1,22 @@
+
+include
+	.inject('/lib/ruta.js')
+	.done(function(){
+		
+		UTest({
+			'location': function(){
+				
+				ruta.add('/user/:id', assert.callback(function(data){
+					eq(data.id, 'bob');
+				}));
+				
+				ruta.navigate('/user/bob');
+				
+			},
+			
+			'after': function(){
+				history.pushState({}, null, '/utest/');
+			}
+		})
+		
+	})

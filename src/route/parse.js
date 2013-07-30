@@ -90,20 +90,30 @@ function route_parseDefinition(route, definition) {
 
 function route_parsePath(route, path) {
 	var queryIndex = path.indexOf('?'),
-		query = queryIndex === -1 ? null : path.substring(queryIndex + 1),
-		obj = query == null ? {} : query_deserialize(query, '&');
+		
+		query = queryIndex === -1
+			? null
+			: path.substring(queryIndex + 1),
+		
+		current = {
+			path: path,
+			params: query == null
+				? {}
+				: query_deserialize(query, '&')
+		};
 
 	if (queryIndex !== -1) {
 		path = path.substring(0, queryIndex);
 	}
 
 	var parts = path_split(path),
+		routeParts = route.parts,
+		routeLength = routeParts.length,
+		
 		imax = parts.length,
 		i = 0,
 		part,
-		x,
-		routeParts = route.parts,
-		routeLength = routeParts.length;
+		x;
 
 	for (; i < imax; i++) {
 		part = parts[i];
@@ -115,12 +125,12 @@ function route_parsePath(route, path) {
 				continue;
 			
 			if (x.alias) {
-				obj[x.alias] = part;
+				current.params[x.alias] = part;
 				continue;
 			}
 			
 		}
 	}
 
-	return obj;
+	return current;
 }

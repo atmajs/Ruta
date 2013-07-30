@@ -13,7 +13,7 @@
 		event.preventDefault();
 		event.stopPropagation();
 		
-		ruta.navigate(this.href);
+		Ruta.navigate(this.href);
 	}
 	
 }());

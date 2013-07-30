@@ -34,7 +34,7 @@ var Location = (function(){
 			
 		},
 		action: function(route){
-			route.value(route.current)
+			route.value(route)
 		},
 		navigate: function(url){
 			this.emitter.navigate(url);

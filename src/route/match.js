@@ -1,7 +1,13 @@
 	
 	
-function route_match(path, routes){
-	path = path_normalize(path);
+function route_match(url, routes){
+	url = path_normalize(url);
+	
+	var query = url.indexOf('?'),
+		path = query === -1
+			? url
+			: url.substring(0, query);
+	
 	
 	var parts = path_split(path);
 	
@@ -9,7 +15,7 @@ function route_match(path, routes){
 		route = routes[i];
 		
 		if (route_isMatch(parts, route)) {
-			route.current = route_parsePath(route, path);
+			route.current = route_parsePath(route, url);
 			
 			return route;
 		}

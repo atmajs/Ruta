@@ -89,6 +89,7 @@ function route_parseDefinition(route, definition) {
 /* - path should be already matched by the route */
 
 function route_parsePath(route, path) {
+	
 	var queryIndex = path.indexOf('?'),
 		
 		query = queryIndex === -1

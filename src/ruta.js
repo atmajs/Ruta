@@ -33,7 +33,9 @@ var Ruta = {
 		
 		return router_ensure()
 			.current();
-	}
+	},
+	
+	parse: Routes.parse
 };
 
 

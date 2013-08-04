@@ -19,7 +19,14 @@ var Routes = (function(){
 			
 			return route_match(path, this.routes);
 		}
-	}
+	};
+	
+	RouteCollection.parse = function(definition, path){
+		var route = {};
+		
+		route_parseDefinition(route, definition);
+		return route_parsePath(route, path);
+	};
 	
 	
 	return RouteCollection;

@@ -7,7 +7,7 @@ include
 			'location': function(){
 				
 				ruta.add('/user/:id', assert.callback(function(data){
-					eq(data.id, 'bob');
+					eq(data.current.params.id, 'bob');
 				}));
 				
 				ruta.navigate('/user/bob');

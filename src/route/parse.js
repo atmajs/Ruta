@@ -20,8 +20,9 @@ function route_parseDefinition(route, definition) {
 		strictCount = 0;
 
 	var gettingMatcher = true,
-		isConditional,
-		isAlias;
+		isOptional,
+		isAlias,
+		rgx;
 
 	var array = [];
 	
@@ -35,11 +36,11 @@ function route_parseDefinition(route, definition) {
 		c0 = x.charCodeAt(0);
 		c1 = x.charCodeAt(1);
 
-		isConditional = c0 === 63; /* ? */
-		isAlias = (isConditional ? c1 : c0) === 58; /* : */
+		isOptional = c0 === 63; /* ? */
+		isAlias = (isOptional ? c1 : c0) === 58; /* : */
 		index = 0;
 		
-		if (isConditional) 
+		if (isOptional) 
 			index++;
 		
 		if (isAlias) 
@@ -51,24 +52,34 @@ function route_parseDefinition(route, definition) {
 		
 
 		// if DEBUG
-		!isConditional && !gettingMatcher && console.log('Strict route part found after conditional', definition);
+		!isOptional && !gettingMatcher && console.log('Strict route part found after optional', definition);
 		// endif
 
 
-		if (isConditional) 
+		if (isOptional) 
 			gettingMatcher = false;
 		
 
-		if (gettingMatcher) {
-			strictCount += 1;
-			matcher += '/' + (isAlias ? regexp_var : x)
-		}
-
-		if (isAlias) {
-			(alias || (alias = {}))[index] = x;
+		////if (gettingMatcher) {
+		////	strictCount += 1;
+		////	matcher += '/' + (isAlias ? regexp_var : x)
+		////}
+		////
+		////if (isAlias) {
+		////	(alias || (alias = {}))[index] = x;
+		////}
+		
+		var bracketIndex = x.indexOf('(');
+		if (isAlias && bracketIndex !== -1) {
+			var end = x.length - 1;
+			if (x[end] !== ')') 
+				end+= 1;
+			
+			rgx = new RegExp(rgx_aliasMatcher(x.substring(bracketIndex + 1, end)));
+			x = x.substring(0, bracketIndex);
 		}
 		
-		if (!isConditional && !isAlias) {
+		if (!isOptional && !isAlias) {
 			array.push(x);
 			continue;
 		}
@@ -76,7 +87,8 @@ function route_parseDefinition(route, definition) {
 		if (isAlias) {
 			array.push({
 				alias: x,
-				optional: isConditional
+				matcher: rgx,
+				optional: isOptional
 			});
 		}
 		

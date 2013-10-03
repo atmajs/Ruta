@@ -50,6 +50,10 @@ function route_isMatch(parts, route) {
 			return false;
 		}
 		
+		if (x.matcher && x.matcher.test(parts[i]) === false) {
+			return false;
+		}
+		
 		if (x.optional) 
 			return true;
 		

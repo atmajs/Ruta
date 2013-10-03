@@ -3,6 +3,7 @@
 include
 	.inject('/src/utils/path.js',
 			'/src/utils/query.js',
+			'/src/utils/rgx.js',
 			'/src/route/parse.js',
 			'/src/route/match.js',
 			'/src/route/Route.js')
@@ -66,6 +67,19 @@ include
 						['/mask/api/simple', { page: 'mask', tab: 'api', anchor: 'simple' }],
 					]
 				});
+		},
+		'conditional': function(){
+			check('/service/:action(save|remove)', {
+				match: [
+					['/service/save', {action: 'save'}],
+					['/service/remove', {action: 'remove'}]
+				],
+				fail: [
+					'/service/delete',
+					'/service/savex',
+					'/service/aremove'
+				]
+			});
 		},
 		'strict': function(){
 			check('!/user/:id', {

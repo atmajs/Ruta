@@ -1,6 +1,6 @@
 	
 	
-function route_match(url, routes){
+function route_match(url, routes, currentMethod){
 	url = path_normalize(url);
 	
 	var query = url.indexOf('?'),
@@ -14,7 +14,7 @@ function route_match(url, routes){
 	for (var i = 0, route, imax = routes.length; i < imax; i++){
 		route = routes[i];
 		
-		if (route_isMatch(parts, route)) {
+		if (route_isMatch(parts, route, currentMethod)) {
 			route.current = route_parsePath(route, url);
 			
 			return route;
@@ -24,7 +24,13 @@ function route_match(url, routes){
 	return null;
 };
 
-function route_isMatch(parts, route) {
+function route_isMatch(parts, route, currentMethod) {
+	
+	if (currentMethod != null &&
+		route.method != null &&
+		route.method !== currentMethod) {
+		return false;
+	}
 	
 	if (route.match) {
 		

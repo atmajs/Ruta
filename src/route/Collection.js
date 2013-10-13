@@ -15,9 +15,9 @@ var Routes = (function(){
 			return this;
 		},
 		
-		get: function(path){
+		get: function(path, currentMethod){
 			
-			return route_match(path, this.routes);
+			return route_match(path, this.routes, currentMethod);
 		}
 	};
 	

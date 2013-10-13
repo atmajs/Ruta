@@ -13,6 +13,13 @@ var Ruta = {
 	
 	Collection: Routes,
 	
+	setRouterType: function(type){
+		if (router == null) 
+			router = new Location(routes, type);
+		
+		return this;
+	},
+	
 	add: function(regpath, mix){
 		router_ensure();
 		

@@ -1,9 +1,25 @@
 
 function route_parseDefinition(route, definition) {
 	
-	if (definition[0] === '!') {
+	if (definition.charCodeAt(0) === 33) {
+		// !
 		route.strict = true;
 		definition = definition.substring(1);
+	}
+	
+	if (definition.charCodeAt(0) === 40) {
+		// (
+		var start = 1,
+			end = definition.length - 1
+			;
+		if (definition.charCodeAt(definition.length - 1) !== 41) {
+			// )
+			console.error('<ruta> rgx parse - expect group closing');
+			end ++;
+		}
+		
+		route.match = new RegExp(definition.substring(start, end));
+		return;
 	}
 	
 	
@@ -24,7 +40,7 @@ function route_parseDefinition(route, definition) {
 		isAlias,
 		rgx;
 
-	var array = [];
+	var array = route.parts = [];
 	
 	for (; i < imax; i++) {
 		x = parts[i];
@@ -52,22 +68,12 @@ function route_parseDefinition(route, definition) {
 		
 
 		// if DEBUG
-		!isOptional && !gettingMatcher && console.log('Strict route part found after optional', definition);
+		!isOptional && !gettingMatcher && console.log('<ruta> strict part found after optional', definition);
 		// endif
 
 
 		if (isOptional) 
 			gettingMatcher = false;
-		
-
-		////if (gettingMatcher) {
-		////	strictCount += 1;
-		////	matcher += '/' + (isAlias ? regexp_var : x)
-		////}
-		////
-		////if (isAlias) {
-		////	(alias || (alias = {}))[index] = x;
-		////}
 		
 		var bracketIndex = x.indexOf('(');
 		if (isAlias && bracketIndex !== -1) {
@@ -94,7 +100,6 @@ function route_parseDefinition(route, definition) {
 		
 	}
 
-	route.parts = array;
 }
 
 

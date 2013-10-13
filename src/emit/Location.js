@@ -8,14 +8,20 @@ var Location = (function(){
 	// import Hash.js
 	// import History.js
 	
-	function Location(collection, action) {
+	function Location(collection, type) {
 		
 		this.collection = collection || new Routes();
-		this.emitter = new HistoryEmitter(this);
 		
-		if (action) 
-			this.action = action;
+		if (type) {
+			var Constructor = type === 'hash'
+				? HashEmitter
+				: HistoryEmitter
+				;
+			this.emitter = new Constructor(this);
+		}
 		
+		if (this.emitter == null) 
+			this.emitter = new HistoryEmitter(this);
 		
 		if (this.emitter == null) 
 			this.emitter = new HashEmitter(this);
@@ -34,7 +40,9 @@ var Location = (function(){
 			
 		},
 		action: function(route){
-			route.value(route)
+			
+			if (typeof route.value === 'function')
+				route.value(route);
 		},
 		navigate: function(url){
 			this.emitter.navigate(url);

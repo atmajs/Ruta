@@ -26,6 +26,15 @@ function route_match(url, routes){
 
 function route_isMatch(parts, route) {
 	
+	if (route.match) {
+		
+		return route.match.test(
+			typeof parts === 'string'
+				? parts
+				: parts.join('/')
+		);
+	}
+	
 	if (typeof parts === 'string') 
 		parts = path_split(parts);
 	

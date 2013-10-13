@@ -41,6 +41,10 @@ include
 				eq(route_isMatch(x, route), false, x);
 			}
 		}
+		
+		if (data.method) {
+			eq(route.method, data.method);
+		}
 	}
 
 
@@ -98,8 +102,39 @@ include
 			});
 		},
 		
-		'query': function(){
-			//check('/user/:id?')
+		'method parser': function(){
+			
+			check('$post !/:action(save)', {
+				match: [
+					['/save', { action: 'save' }]
+				],
+				fail: ['/remove'],
+				method: 'POST'
+			});
+			
+		},
+		
+		'regex': function(){
+			check('/:alias(^num[0-9]{1,2}$)', {
+				match: [
+					[ '/num10', { alias: 'num10' } ],
+					[ '/num1', { alias: 'num1' } ],
+					[ '/num0/num2', { alias: 'num0' } ]
+				],
+				fail: [
+					'/num100',
+					'/numx',
+					'/numer' ]
+			});
+			
+			check('(\\.less$)', {
+				match: [
+					[ '/style/main.less' ]
+				],
+				fail: [
+					'/aless'
+				]
+			});
 		}
 		
 	});

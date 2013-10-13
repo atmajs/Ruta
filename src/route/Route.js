@@ -5,7 +5,16 @@
 var regexp_var = '([^\\\\]+)';
 
 function Route(definition, value) {
-
+	
+	this.method = definition.charCodeAt(0) === 36
+		? definition.substring(1, definition.indexOf(' ')).toUpperCase()
+		: ''
+		;
+	
+	if (this.method !== '') {
+		definition = definition.substring( this.method.length + 2 );
+	}
+		
 	this.value = value;
 	this.definition = definition;
 	

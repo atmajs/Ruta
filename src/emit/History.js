@@ -36,6 +36,10 @@ function HistoryEmitter(listener){
 		changed: function(){
 			
 			this.listener.changed(location.pathname + location.search);
+		},
+		current: function(){
+			
+			return location.pathname + location.search;
 		}
 	};
 

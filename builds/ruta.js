@@ -13,8 +13,7 @@
 }(this, function(global){
 	"use strict";
 	
-	var mask = global.mask || Mask;
-	
+	// import ../src/vars.js
 	// import ../src/utils/path.js
 	// import ../src/utils/query.js
 	// import ../src/utils/rgx.js

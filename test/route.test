@@ -1,7 +1,8 @@
 
 
 include
-	.inject('/src/utils/path.js',
+	.inject('/src/vars.js',
+			'/src/utils/path.js',
 			'/src/utils/query.js',
 			'/src/utils/rgx.js',
 			'/src/route/parse.js',
@@ -59,12 +60,20 @@ include
 						['user/bob?age=27', {id: 'bob', age: 27}]
 					],
 					fail: [
+						'/user/10/remove',
 						'/user',
 						'/user/',
 						'/users/10',
 						'/x/user/20'
 					]
 				});
+				
+				check('/user/:id/?:action', {
+					match: [
+						['/user/20/remove', {id: 20, action: 'remove'}],
+						['/user/bob', {id: 'bob'}]
+					]
+				})
 				
 				check('/:page/:tab/:anchor', {
 					match: [
@@ -115,7 +124,7 @@ include
 		},
 		
 		'regex': function(){
-			check('/:alias(^num[0-9]{1,2}$)', {
+			check('^/:alias(^num[0-9]{1,2}$)', {
 				match: [
 					[ '/num10', { alias: 'num10' } ],
 					[ '/num1', { alias: 'num1' } ],

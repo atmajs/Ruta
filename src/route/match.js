@@ -1,15 +1,8 @@
 	
 	
 function route_match(url, routes, currentMethod){
-	url = path_normalize(url);
 	
-	var query = url.indexOf('?'),
-		path = query === -1
-			? url
-			: url.substring(0, query);
-	
-	
-	var parts = path_split(path);
+	var parts = path_getPartsFromUrl(url);
 	
 	for (var i = 0, route, imax = routes.length; i < imax; i++){
 		route = routes[i];
@@ -42,14 +35,13 @@ function route_isMatch(parts, route, currentMethod) {
 	}
 	
 	if (typeof parts === 'string') 
-		parts = path_split(parts);
+		parts = path_getPartsFromUrl(parts);
 	
 	
 		
 	var routeParts = route.parts,
 		routeLength = routeParts.length;
 
-	
 	
 	for (var i = 0, x, imax = parts.length; i < imax; i++){
 		

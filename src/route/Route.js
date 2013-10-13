@@ -14,7 +14,8 @@ function Route(definition, value) {
 	if (this.method != null) {
 		definition = definition.substring( this.method.length + 2 );
 	}
-		
+	
+	this.strict = _cfg_isStrict;
 	this.value = value;
 	this.definition = definition;
 	

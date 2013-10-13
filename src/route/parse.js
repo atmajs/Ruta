@@ -1,25 +1,31 @@
 
 function route_parseDefinition(route, definition) {
 	
-	if (definition.charCodeAt(0) === 33) {
-		// !
-		route.strict = true;
-		definition = definition.substring(1);
-	}
-	
-	if (definition.charCodeAt(0) === 40) {
-		// (
-		var start = 1,
-			end = definition.length - 1
-			;
-		if (definition.charCodeAt(definition.length - 1) !== 41) {
-			// )
-			console.error('<ruta> rgx parse - expect group closing');
-			end ++;
-		}
-		
-		route.match = new RegExp(definition.substring(start, end));
-		return;
+	var c = definition.charCodeAt(0);
+	switch(c){
+		case 33:
+			// !
+			route.strict = true;
+			definition = definition.substring(1);
+			break;
+		case 94:
+			// ^
+			route.strict = false;
+			definition = definition.substring(1);
+			break;
+		case 40:
+			// (
+			var start = 1,
+				end = definition.length - 1
+				;
+			if (definition.charCodeAt(definition.length - 1) !== 41) {
+				// )
+				console.error('<ruta> rgx parse - expect group closing');
+				end ++;
+			}
+			
+			route.match = new RegExp(definition.substring(start, end));
+			return;
 	}
 	
 	

@@ -20,6 +20,10 @@ var Ruta = {
 		return this;
 	},
 	
+	setStrictBehaviour: function(isStrict){
+		_cfg_isStrict = isStrict;
+	},
+	
 	add: function(regpath, mix){
 		router_ensure();
 		

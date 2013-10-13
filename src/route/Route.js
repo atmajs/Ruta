@@ -8,10 +8,10 @@ function Route(definition, value) {
 	
 	this.method = definition.charCodeAt(0) === 36
 		? definition.substring(1, definition.indexOf(' ')).toUpperCase()
-		: ''
+		: null
 		;
 	
-	if (this.method !== '') {
+	if (this.method != null) {
 		definition = definition.substring( this.method.length + 2 );
 	}
 		

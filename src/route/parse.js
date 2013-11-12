@@ -29,13 +29,25 @@ function route_parseDefinition(route, definition) {
 	}
 	
 	
+	
 	var parts = definition.split('/'),
+		search,
+		searchIndex,
 		i = 0,
 		imax = parts.length,
 		x,
 		c0,
 		index,
 		c1;
+		
+	
+	var last = parts[imax - 1];
+	searchIndex = last.indexOf('?');
+	if (searchIndex > (imax === 1 ? -1 : 0)) {
+		// `?` cannt be at `0` position, when has url definition contains `path`
+		search = last.substring(searchIndex + 1);
+		parts[imax - 1] = last.substring(0, searchIndex);
+	}
 
 	var matcher = '',
 		alias = null,
@@ -46,7 +58,7 @@ function route_parseDefinition(route, definition) {
 		isAlias,
 		rgx;
 
-	var array = route.parts = [];
+	var array = route.path = [];
 	
 	for (; i < imax; i++) {
 		x = parts[i];
@@ -106,6 +118,39 @@ function route_parseDefinition(route, definition) {
 		
 	}
 
+	if (search) {
+		var query = route.query = {};
+		
+		parts = search.split('&');
+		
+		i = -1;
+		imax = parts.length;
+		
+		var key, value, str, eqIndex;
+		while(++i < imax){
+			str = parts[i];
+			
+			eqIndex = str.indexOf('=');
+			if (eqIndex === -1) {
+				query[str] = '';
+				continue;
+			}
+			
+			key = str.substring(0, eqIndex);
+			value = str.substring(eqIndex + 1);
+			
+			if (value.charCodeAt(0) === 40) {
+				// (
+				value = new RegExp(rgx_aliasMatcher(value));
+			}
+			
+			query[key] = value;
+		}
+		
+		if (route.path.length === 0) {
+			route.strict = false;
+		}
+	}
 }
 
 
@@ -130,18 +175,18 @@ function route_parsePath(route, path) {
 		path = path.substring(0, queryIndex);
 	}
 
-	var parts = path_split(path),
-		routeParts = route.parts,
-		routeLength = routeParts.length,
+	var pathArr = path_split(path),
+		routePath = route.path,
+		routeLength = routePath.length,
 		
-		imax = parts.length,
+		imax = pathArr.length,
 		i = 0,
 		part,
 		x;
 
 	for (; i < imax; i++) {
-		part = parts[i];
-		x = i < routeLength ? routeParts[i] : null;
+		part = pathArr[i];
+		x = i < routeLength ? routePath[i] : null;
 		
 		if (x) {
 			
@@ -152,7 +197,6 @@ function route_parsePath(route, path) {
 				current.params[x.alias] = part;
 				continue;
 			}
-			
 		}
 	}
 

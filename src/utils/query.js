@@ -10,7 +10,10 @@ function query_deserialize(query, delimiter) {
 	for (; i < imax; i++) {
 		x = parts[i].split('=');
 
-		obj[x[0]] = decodeURIComponent(x[1]);
+		obj[x[0]] = x[1] == null
+			? ''
+			: decodeURIComponent(x[1])
+			;
 
 	}
 
@@ -29,4 +32,30 @@ function query_serialize(params, delimiter) {
 
 	return query;
 }
-
+////
+//// @obsolete - use query_deserialize
+////function query_split(query){
+////	var parts = query.split('&'),
+////		i = -1,
+////		imax = parts.length,
+////		search = {},
+////		eqIndex,
+////		key,
+////		value
+////		;
+////	while(++i < imax){
+////		key = parts[i];
+////		eqIndex = key.indexOf('=');
+////		if (eqIndex === -1) {
+////			search[key] = '';
+////			continue;
+////		}
+////		
+////		value = decodeURIComponent(key.substring(eqIndex + 1));
+////		key = key.substring(0, eqIndex);
+////		
+////		search[key] = value;
+////	}
+////	
+////	return search;
+////}

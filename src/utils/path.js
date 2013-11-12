@@ -28,16 +28,7 @@ function path_split(path) {
 		: path.split('/');
 }
 
-function path_join(parts) {
-	return '/' + parts.join('/');
+function path_join(pathParts) {
+	return '/' + pathParts.join('/');
 }
 
-function path_getPartsFromUrl(url){
-	var query = url.indexOf('?'),
-		path = query === -1
-			? url
-			: url.substring(0, query);
-	
-	
-	return path_split(path);
-}

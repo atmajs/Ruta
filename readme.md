@@ -9,14 +9,20 @@ Mainly used for an application routing, but can be used for any other purpose
 
 ##### Route
 
-- match **part(s)**
-    ``` /user ``` (same as ``` !/user ```) does not match ``` /user/bob ``
+- strict match **part(s)**
+    ``` /user ``` _(same as ``` !/user ```)_ does not match ``` /user/bob ``
 - begins with **part(s)**
     ``` ^/user ``` matches ``` /user/bob ```, but does not ``` /users ```
 - regexp - enclosed in Parentheses '(regexp)'
     ``` (\.less$) ```
+	``` /user/:action(edit|delete) ```
+	``` /user/:action([a-z]{2,4}) ```
 - HTTP method
     ```$post /user```
+- query string _(matches key/value at any position/order in query string)_
+	```?debug```
+	```?debug=js```
+	```?debug=(^(js|less)$)```
 
 ##### Parts
 

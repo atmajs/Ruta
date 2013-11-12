@@ -144,6 +144,59 @@ include
 					'/aless'
 				]
 			});
+		},
+		
+		'query': function(){
+			
+			check('?debug', {
+				match: [
+					 '/some/path?debug' ,
+					 '/some/path?foo=bar&debug',
+					 '/some/path?foo&debug=bar'
+				],
+				fail: [
+					'/debug/path/debug?debugger'
+				]
+			});
+			
+			check('?debug=js', {
+				match: [
+					 '/some/path?debug=js' ,
+					 '/some/path?foo=bar&debug=js'
+				],
+				fail: [
+					'/debug/path/debug?debug&debug=jss'
+				]
+			});
+			
+			check('/:action/:part?debug=(js|less)', {
+				match: [
+					['/some/path?debug=js' , {
+						action: 'some',
+						part: 'path',
+						debug: 'js'
+					} ],
+					['/some/path?foo=bar&debug=less', {
+						action: 'some',
+						part: 'path',
+						debug: 'less',
+						foo: 'bar'
+					} ],
+					['/some/path?foo&debug=less', {
+						action: 'some',
+						part: 'path',
+						debug: 'less',
+						foo: ''
+					} ]
+				],
+				fail: [
+					'/debug/path/debug?debug=less',
+					'/debug?debug=js',
+					'/debug/?debug=js',
+					'/some/path?debug=lesser',
+					'/debug/path/debug?debug=someless'
+				]
+			});
 		}
 		
 	});

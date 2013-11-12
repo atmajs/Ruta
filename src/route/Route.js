@@ -23,7 +23,8 @@ function Route(definition, value) {
 }
 
 Route.prototype = {
-	parts: null,
+	path: null,
+	query: null,
 	value: null,
 	current: null
 };

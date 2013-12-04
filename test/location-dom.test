@@ -14,7 +14,7 @@ include
 				
 			},
 			
-			'after': function(){
+			$after: function(){
 				history.pushState({}, null, '/utest/');
 			}
 		})

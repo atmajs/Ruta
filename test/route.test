@@ -3,6 +3,7 @@
 include
 	.inject('/src/vars.js',
 			'/src/utils/path.js',
+			'/src/utils/parts.js',
 			'/src/utils/query.js',
 			'/src/utils/rgx.js',
 			'/src/route/parse.js',

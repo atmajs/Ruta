@@ -175,27 +175,30 @@ function route_parsePath(route, path) {
 		path = path.substring(0, queryIndex);
 	}
 
-	var pathArr = path_split(path),
-		routePath = route.path,
-		routeLength = routePath.length,
-		
-		imax = pathArr.length,
-		i = 0,
-		part,
-		x;
-
-	for (; i < imax; i++) {
-		part = pathArr[i];
-		x = i < routeLength ? routePath[i] : null;
-		
-		if (x) {
+	if (route.path != null) {
 			
-			if (typeof x === 'string') 
-				continue;
+		var pathArr = path_split(path),
+			routePath = route.path,
+			routeLength = routePath.length,
 			
-			if (x.alias) {
-				current.params[x.alias] = part;
-				continue;
+			imax = pathArr.length,
+			i = 0,
+			part,
+			x;
+	
+		for (; i < imax; i++) {
+			part = pathArr[i];
+			x = i < routeLength ? routePath[i] : null;
+			
+			if (x) {
+				
+				if (typeof x === 'string') 
+					continue;
+				
+				if (x.alias) {
+					current.params[x.alias] = part;
+					continue;
+				}
 			}
 		}
 	}

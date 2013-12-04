@@ -9,11 +9,6 @@ function route_match(url, routes, currentMethod){
 		route = routes[i];
 		
 		if (route_isMatch(parts, route, currentMethod)) {
-			if (route.parts == null) {
-						
-				route.current = { params: {} };
-				return route;
-			}
 			
 			route.current = route_parsePath(route, url);
 			return route;

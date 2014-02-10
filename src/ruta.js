@@ -46,7 +46,12 @@ var Ruta = {
 			.current();
 	},
 	
-	parse: Routes.parse
+	parse: Routes.parse,
+	
+	$utils: {
+		
+		pathFromCLI: path_fromCLI
+	}
 };
 
 

@@ -152,8 +152,14 @@ include
 			check('?debug', {
 				match: [
 					 '/some/path?debug' ,
-					 '/some/path?foo=bar&debug',
-					 '/some/path?foo&debug=bar'
+					 ['/some/path?foo=bar%20baz&debug', {
+						foo: 'bar baz',
+						debug: ''
+					 }],
+					 ['/some/path?foo&debug=bar', {
+						foo: '',
+						debug: 'bar'
+					 }]
 				],
 				fail: [
 					'/debug/path/debug?debugger'
@@ -198,6 +204,19 @@ include
 					'/debug/path/debug?debug=someless'
 				]
 			});
+		},
+		
+		'cli-parser': function(){
+			
+			[
+			  ['custom test --debug', '/custom/test?debug=true'],
+			  ['test -debug value foo', '/test/foo?debug=value'],
+			  ['test -debug "value foo"', '/test?debug=value%20foo'],
+			]
+			.forEach(function(test){
+				eq(path_fromCLI(test[0]), test[1]);
+			});
+			
 		}
 		
 	});

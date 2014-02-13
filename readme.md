@@ -113,7 +113,9 @@ collection.add('/user/?:id')
 
 // Query String
 collection.add('/users', X);
-collection.get('/users?loc=DE', {key: '/users', value: X, current: {loc: 'DE'} });
+collection.get('/users?loc=DE') 
+//> { key: '/users', value: X, current: { params: { loc: 'DE' }, url: '/users?loc=DE' } }
+
 ```
 
 

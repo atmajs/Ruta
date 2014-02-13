@@ -8,7 +8,9 @@ include
 		UTest({
 			'add+get': function(){
 				
-				routes.add('/note/:id/:action(edit|delete)', { foo: 'bar' });
+				routes
+					.clear()
+					.add('/note/:id/:action(edit|delete)', { foo: 'bar' });
 
 				var got = routes.get('/note/524d66bccc0ac4d8913eaea5/edit?x=y');
 
@@ -17,11 +19,35 @@ include
 				eq(got.current.params.action, 'edit');
 				eq(got.current.params.x, 'y');
 				
-				routes.add('/install/:name?:global(glob|g)', { foo: 'bar' });
+				
+				routes
+					.clear()
+					.add('/install/:name?:global(glob|g)', { foo: 'bar' });
+					
 				var got = routes.get('/install/loader?glob=baz');
 				
 				notEq(got, null);
 				eq(got.current.params.global, 'baz');
+				
+				
+				routes
+					.clear()
+					.add('/install/:name??:global(glob|g)', { foo: 'bar' });
+				var got = routes.get('/install/loader?qux=baz');
+				
+				notEq(got, null);
+				eq(got.current.params.qux, 'baz');
+				eq(got.current.params.global, null);
+				
+				routes
+					.clear()
+					.add('/install/:name??:global(glob|g)', { foo: 'bar' });
+					
+				var got = routes.get('/install/loader?qux=baz&g=foo');
+				
+				notEq(got, null);
+				eq(got.current.params.qux, 'baz');
+				eq(got.current.params.global, 'foo');
 			},
 			
 			

@@ -64,6 +64,10 @@ var route_match,
 					continue;
 				}
 				
+				if (c === '?') 
+					continue;
+				
+				
 				if (typeof value === 'string') {
 					
 					if (query[key] == null) 

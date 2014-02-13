@@ -18,6 +18,12 @@ var Routes = (function(){
 		get: function(path, currentMethod){
 			
 			return route_match(path, this.routes, currentMethod);
+		},
+		
+		clear: function(){
+			this.routes.length = 0;
+			
+			return this;
 		}
 	};
 	

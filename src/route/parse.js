@@ -180,6 +180,10 @@ var route_parseDefinition, // out route, definition
 		if (route.query) {
 			// ensura aliased queries, like ?:debugger(d|debug)
 			for (var key in route.query){
+				
+				if (key[0] === '?') 
+					key = key.substring(1);
+				
 				if (key[0] === ':') {
 					var alias = rgx_parsePartWithRegExpAlias(key),
 						name = alias.alias;

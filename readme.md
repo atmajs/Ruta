@@ -13,7 +13,7 @@ Mainly used for an application routing, but can be used for any other purpose
 	- ``` /user ``` _(same as ``` !/user ```)_ does not match ``` /user/bob ``
 - begins with **part(s)**
 	- ``` ^/user ``` matches ``` /user/bob ```, but does not ``` /users ```
-- regexp - enclosed in Parentheses '(regexp)' **full-string-match** is used via `^xxxx$`
+- regexp - enclosed in parentheses '(regexp)'
 	- ``` (\.less$) ```
 	- ``` /user/:action(edit|delete) ```
 	- ``` /user/:action([a-z]{2,4}) ```

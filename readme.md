@@ -1,6 +1,7 @@
-RUTA.js
+RutaJS
 ----
 
+[![Build Status](https://travis-ci.org/atmajs/Ruta.png?branch=master)](https://travis-ci.org/atmajs/Ruta)
 
 *Route*_Key_-Value Collection for Browser and Node.js
 
@@ -17,7 +18,7 @@ Mainly used for an application routing, but can be used for any other purpose
 	- ``` (\.less$) ```
 	- ``` /user/:action(edit|delete) ```
 	- ``` /user/:action([a-z]{2,4}) ```
-- HTTP method
+- method
 	- ```$post /user```
 - query string _(matches key/value at any position(order) in query string)_
 	- ```?debug```

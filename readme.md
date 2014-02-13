@@ -10,24 +10,24 @@ Mainly used for an application routing, but can be used for any other purpose
 ##### Route
 
 - strict match **part(s)**
-    ``` /user ``` _(same as ``` !/user ```)_ does not match ``` /user/bob ``
+	- ``` /user ``` _(same as ``` !/user ```)_ does not match ``` /user/bob ``
 - begins with **part(s)**
-    ``` ^/user ``` matches ``` /user/bob ```, but does not ``` /users ```
-- regexp - enclosed in Parentheses '(regexp)'
-    ``` (\.less$) ```
-	``` /user/:action(edit|delete) ```
-	``` /user/:action([a-z]{2,4}) ```
+	- ``` ^/user ``` matches ``` /user/bob ```, but does not ``` /users ```
+- regexp - enclosed in Parentheses '(regexp)' **full-string-match** is used via `^xxxx$`
+	- ``` (\.less$) ```
+	- ``` /user/:action(edit|delete) ```
+	- ``` /user/:action([a-z]{2,4}) ```
 - HTTP method
-    ```$post /user```
-- query string _(matches key/value at any position/order in query string)_
-	```?debug```
-	```?debug=js```
-	```?debug=(^(js|less)$)```
+	- ```$post /user```
+- query string _(matches key/value at any position(order) in query string)_
+	- ```?debug```
+	- ```?debug=js```
+	- ```?debug=(js|less)``` (in parenthese **regexp** is used, note here is also full-match is used
+	- ```?:debugger(d|debug)=(js|less)``` match `d=less` like `debugger: 'less'`
 
 ##### Parts
 
->Each route definition (path) is split into parts _(folders)_
-and when matching an url only pathname is taken from it and is also split into folders.
+>Each route definition (path) is split into parts _(folders)_.
 
 Each part _(folder)_ can be
 
@@ -85,7 +85,7 @@ will be called, when router emits the URL-change event.
 RutaJS supports History API and ```hashchanged``` routing.
 
 
-**Important** _ruta_ object is already the route collection itself. And there is a Router bound to this collection.
+**Important** _ruta_ object is already the route collection itself. And there is History API Router bound to this collection.
 
 
 

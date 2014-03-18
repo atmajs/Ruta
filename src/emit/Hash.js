@@ -23,6 +23,10 @@ function HashEmitter(listener) {
 	
 	HashEmitter.prototype = {
 		navigate: function(hash) {
+			if (hash == null) {
+				this.changed(location.hash);
+				return;
+			}
 			
 			location.hash = hash;
 		},

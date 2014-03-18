@@ -29,6 +29,11 @@ function HistoryEmitter(listener){
 	
 	HistoryEmitter.prototype = {
 		navigate: function(url){
+			if (url == null) {
+				this.changed();
+				return;
+			}
+			
 			history.pushState({}, null, url);
 			this.changed();
 		},

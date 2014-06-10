@@ -32,7 +32,7 @@ var query_deserialize,
 			key;
 	
 		for (key in params) {
-			query = (query ? delimiter : '') + key + '=' + encodeURIComponent(params[key]);
+			query = query + (query ? delimiter : '') + key + '=' + encodeURIComponent(params[key]);
 		}
 	
 		return query;

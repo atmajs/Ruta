@@ -28,10 +28,19 @@ var query_deserialize,
 		delimiter == null && (delimiter = '/');
 	
 		var query = '',
-			key;
-	
-		for (key in params) {
-			query = query + (query ? delimiter : '') + key + '=' + encodeURIComponent(params[key]);
+			key, val;
+		for(key in params) {
+			val = params[key];
+			if (val == null) 
+				continue;
+			
+			// serialize as flag
+			if (typeof val === 'boolean') 
+				val = null;
+			
+			query = query + (query ? delimiter : '') + key;
+			if (val != null) 
+				query += '=' + encodeURIComponent(val);
 		}
 	
 		return query;

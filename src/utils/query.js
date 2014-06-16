@@ -40,7 +40,7 @@ var query_deserialize,
 			
 			query = query + (query ? delimiter : '') + key;
 			if (val != null) 
-				query += '=' + encodeURIComponent(val);
+				query += '=' + encode(val);
 		}
 	
 		return query;
@@ -68,6 +68,15 @@ var query_deserialize,
 		try {
 			return decodeURIComponent(str)
 		} catch(error) {
+			log_error('decode:URI malformed');
+			return '';
+		}
+	}
+	function encode(str) {
+		try {
+			return encodeURIComponent(str);
+		} catch(error) {
+			log_error('encode:URI malformed');
 			return '';
 		}
 	}

@@ -14,6 +14,7 @@
 	"use strict";
 	
 	// import ../src/vars.js
+	// import ../src/utils/log.js
 	// import ../src/utils/path.js
 	// import ../src/utils/query.js
 	// import ../src/utils/rgx.js

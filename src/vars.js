@@ -8,4 +8,5 @@ var mask = global.mask || Mask;
  *
  * Strict means - like in regex start-end /^$/
  * */
-var	_cfg_isStrict = true;
+var	_cfg_isStrict = true,
+	_Array_slice = Array.prototype.slice;

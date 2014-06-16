@@ -28,7 +28,7 @@ var route_parseDefinition, // out route, definition
 					;
 				if (definition.charCodeAt(definition.length - 1) !== 41) {
 					// )
-					console.error('<ruta> rgx parse - expect group closing');
+					log_error('parser - expect group closing');
 					end ++;
 				}
 				

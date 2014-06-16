@@ -27,7 +27,7 @@ var Location = (function(){
 			this.emitter = new HashEmitter(this);
 		
 		if (this.emitter == null) 
-			console.error('Router can not be initialized - (nor History API / nor Hashchage');
+			log_error('Router can not be initialized - (nor HistoryAPI / nor hashchange');
 	}
 	
 	Location.prototype = {

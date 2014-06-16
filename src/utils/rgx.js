@@ -33,7 +33,7 @@ var rgx_fromString,
 			;
 		
 		if (pStart === -1 || pEnd === -1) {
-			console.error('<ruta> Expected alias part with regexp', str);
+			log_error('Expected alias part with regexp', str);
 			return null;
 		}
 		

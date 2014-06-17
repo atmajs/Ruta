@@ -209,7 +209,7 @@ include
 		'cli-parser': function(){
 			
 			[
-			  ['custom test --debug', '/custom/test?debug=true'],
+			  ['custom test --debug', '/custom/test?debug'],
 			  ['test -debug value foo', '/test/foo?debug=value'],
 			  ['test -debug "value foo"', '/test?debug=value%20foo'],
 			]

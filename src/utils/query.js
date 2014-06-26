@@ -66,7 +66,7 @@ var query_deserialize,
 	}
 	function decode(str) {
 		try {
-			return decodeURIComponent(str)
+			return decodeURIComponent(str);
 		} catch(error) {
 			log_error('decode:URI malformed');
 			return '';

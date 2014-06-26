@@ -39,17 +39,20 @@ var Ruta = {
 		router_ensure()
 			.navigate(path);
 	},
-	
 	current: function(){
-		
-		return router_ensure()
-			.current();
+		return router_ensure().current();
+	},
+	currentPath: function(){
+		return router_ensure().currentPath();
 	},
 	
 	parse: Routes.parse,
 	
 	$utils: {
-		
+		/*
+		 * Format URI path from CLI command:
+		 * some action -foo bar === /some/action?foo=bar
+		 */
 		pathFromCLI: path_fromCLI
 	}
 };

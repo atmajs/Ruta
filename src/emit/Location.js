@@ -48,9 +48,12 @@ var Location = (function(){
 			this.emitter.navigate(url);
 		},
 		current: function(){
-			var path = this.emitter.current();
-			
-			return this.collection.get(path);
+			return this.collection.get(
+				this.currentPath()
+			);
+		},
+		currentPath: function(){
+			return this.emitter.current();
 		}
 	};
 	

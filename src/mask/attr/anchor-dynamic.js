@@ -1,12 +1,7 @@
-
-
 (function() {
 	
-		
-	mask.registerAttrHandler('x-dynamic', function(node, value, model, cntx, tag){
-		
+	mask.registerAttrHandler('x-dynamic', function(node, value, model, ctx, tag){
 		tag.onclick = navigate;
-		
 	}, 'client');
 	
 	function navigate(event) {

@@ -94,7 +94,8 @@ var route_parseDefinition, // out route, definition
 			
 	
 			// if DEBUG
-			!isOptional && !gettingMatcher && console.log('<ruta> strict part found after optional', definition);
+			if (!isOptional && !gettingMatcher) 
+				log_error('Strict part found after optional', definition);
 			// endif
 	
 	
@@ -237,4 +238,4 @@ var route_parseDefinition, // out route, definition
 				return obj[key];
 		}
 	}
-}())
+}());

@@ -53,7 +53,12 @@ var Ruta = {
 		 * Format URI path from CLI command:
 		 * some action -foo bar === /some/action?foo=bar
 		 */
-		pathFromCLI: path_fromCLI
+		pathFromCLI: path_fromCLI,
+		
+		query: {
+			serialize: query_serialize,
+			deserialize: query_deserialize
+		}
 	}
 };
 

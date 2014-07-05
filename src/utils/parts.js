@@ -35,7 +35,7 @@ var parts_serialize,
 			query: query === -1
 				? null
 				: query_deserialize(url.substring(query + 1), '&')
-		}
+		};
 	};
 	
 	

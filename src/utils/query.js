@@ -5,7 +5,8 @@ var query_deserialize,
 (function(){
 
 	query_deserialize = function(query, delimiter) {
-		delimiter == null && (delimiter = '/');
+		if (delimiter == null) 
+			delimiter = '&';
 		
 		var obj = {},
 			parts = query.split(delimiter),
@@ -23,10 +24,10 @@ var query_deserialize,
 		}
 		return obj;
 	};
-	
 	query_serialize = function(params, delimiter) {
-		delimiter == null && (delimiter = '/');
-	
+		if (delimiter == null) 
+			delimiter = '&';
+		
 		var query = '',
 			key, val;
 		for(key in params) {
@@ -46,6 +47,7 @@ var query_deserialize,
 		return query;
 	};
 	
+	// = private
 	
 	function obj_setProperty(obj, property, value) {
 		var chain = property.split('.'),

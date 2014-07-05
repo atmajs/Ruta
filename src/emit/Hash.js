@@ -10,7 +10,7 @@ function HashEmitter(listener) {
 
 	window.onhashchange = function() {
 		that.changed(location.hash);
-	}
+	};
 
 	return that;
 }

@@ -16,34 +16,37 @@ var Ruta = {
 	setRouterType: function(type){
 		if (router == null) 
 			router = new Location(routes, type);
-		
 		return this;
 	},
 	
 	setStrictBehaviour: function(isStrict){
 		_cfg_isStrict = isStrict;
+		return this;
 	},
 	
 	add: function(regpath, mix){
 		router_ensure();
-		
-		return routes.add(regpath, mix);
+		routes.add(regpath, mix);
+		return this;
 	},
 	
 	get: function(path){
-		
 		return routes.get(path);
 	},
 	navigate: function(path){
-		
-		router_ensure()
-			.navigate(path);
+		router_ensure().navigate(path);
+		return this;
 	},
 	current: function(){
 		return router_ensure().current();
 	},
 	currentPath: function(){
 		return router_ensure().currentPath();
+	},
+	
+	notifyCurrent: function(){
+		router_ensure().navigate();
+		return this;
 	},
 	
 	parse: Routes.parse,

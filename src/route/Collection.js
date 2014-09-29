@@ -9,9 +9,7 @@ var Routes = (function(){
 	
 	RouteCollection.prototype = {
 		add: function(regpath, value){
-			
 			this.routes.push(new Route(regpath, value));
-			
 			return this;
 		},
 		
@@ -22,7 +20,6 @@ var Routes = (function(){
 		
 		clear: function(){
 			this.routes.length = 0;
-			
 			return this;
 		}
 	};
@@ -33,7 +30,6 @@ var Routes = (function(){
 		route_parseDefinition(route, definition);
 		return route_parsePath(route, path);
 	};
-	
 	
 	return RouteCollection;
 }());

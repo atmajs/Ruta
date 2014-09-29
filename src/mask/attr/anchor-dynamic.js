@@ -10,5 +10,4 @@
 		
 		Ruta.navigate(this.href);
 	}
-	
 }());

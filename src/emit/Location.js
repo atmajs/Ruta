@@ -40,9 +40,10 @@ var Location = (function(){
 			
 		},
 		action: function(route){
-			
-			if (typeof route.value === 'function')
-				route.value(route);
+			if (typeof route.value === 'function') {
+				var current = route.current;
+				route.value(route, current && current.params);
+			}
 		},
 		navigate: function(url){
 			this.emitter.navigate(url);

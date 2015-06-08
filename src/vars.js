@@ -1,5 +1,5 @@
 
-var mask = global.mask || Mask;
+var mask = global.mask || (typeof Mask !== 'undefined' ? Mask : null);
 
 // settings
 

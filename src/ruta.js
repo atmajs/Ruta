@@ -60,7 +60,13 @@ var Ruta = {
 		
 		query: {
 			serialize: query_serialize,
-			deserialize: query_deserialize
+			deserialize: query_deserialize,
+			get: function(path_){
+				var path = path_ == null
+					? location.search
+					: path_;
+				return path_getQuery(path);
+			}
 		}
 	}
 };

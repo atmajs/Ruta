@@ -21,11 +21,22 @@ function HistoryEmitter(listener){
 }
 
 HistoryEmitter.prototype = {
-	navigate: function(url){
+	navigate: function(url, opts){
 		if (url == null) {
 			this.changed();
 			return;
 		}
+		
+		if (opts != null && opts.extend === true) {
+			var query   = path_getQuery(url),
+				current = path_getQuery(location.search);
+				
+			if (current != null && query != null) {
+				query = obj_extend(current, query);
+				url = path_setQuery(url, query);
+			}
+		}
+		
 		
 		history.pushState({}, null, url);
 		this.initial = null;

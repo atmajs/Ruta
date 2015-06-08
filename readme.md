@@ -48,23 +48,23 @@ Route-Value Collection.
 
 ```javascript
 /**
- * @param route <String> : route definition
- * @param obj <Any> : value to store in collection
- */
+  * @param route <String> : route definition
+  * @param obj <Any> : value to store in collection
+ \*/
 ruta.Collection.prototype.add(route, obj <Any>);
 
 
 /**
- * @param path <String>: url string
- * @param method <String>: optional, request method GET, POST, DELETE, PUT
- * @return route <Object> {
- *      value <Any> - stored value,
- *      current <Object> {
- *          params <Object>, - holds alias values and querystring arguments
- *          url <String>
- *      }
- * }
- */
+  * @param path <String>: url string
+  * @param method <String>: optional, request method GET, POST, DELETE, PUT
+  * @return route <Object> {
+  *      value <Any> - stored value,
+  *      current <Object> {
+  *          params <Object>, - holds alias values and querystring arguments
+  *          url <String>
+  *      }
+  * }
+ \*/
 ruta.Collection.prototype.get(path, ?method);
     
 ```
@@ -89,9 +89,23 @@ will be called, when router emits the URL-change event.
 RutaJS supports History API and ```hashchanged``` routing.
 
 
-**Important** _ruta_ object is already the route collection itself. And there is History API Router bound to this collection.
+> :warning: _ruta_ object is already the route collection itself. And there is History API Router bound to this collection.
 
 
+### Api
+
+- `.add(definition:String, mix:Any)` Adds anything to the collection
+
+	- `definition` String routing definition
+	- `mix` Any Object, that you can later retrieve via `.get` method. When `mix` is a `Function`, then it will be additionally bound to the Router
+
+- `.get(url:String)` Gets first object from the collection matches the url
+
+- `.navigate(url:String, ?options:Object)` Navigate the Router to the url
+
+	- `options`
+		
+		- `extend:Boolean` Preserve query string parameters, which are not in passed url
 
 #### Examples
 

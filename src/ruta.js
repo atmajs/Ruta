@@ -33,8 +33,8 @@ var Ruta = {
 	get: function(path){
 		return routes.get(path);
 	},
-	navigate: function(path){
-		router_ensure().navigate(path);
+	navigate: function(path, opts){
+		router_ensure().navigate(path, opts);
 		return this;
 	},
 	current: function(){

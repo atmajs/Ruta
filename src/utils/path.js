@@ -1,7 +1,9 @@
 var path_normalize,
 	path_split,
 	path_join,
-	path_fromCLI
+	path_fromCLI,
+	path_getQuery,
+	path_setQuery
 	;
 
 (function(){
@@ -51,6 +53,26 @@ var path_normalize,
 		return parts_serialize(parts);
 	};
 	
+	path_getQuery = function(path){
+		var i = path.indexOf('?');
+		if (i === -1) 
+			return null;
+		
+		var query = path.substring(i + 1);
+		return query_deserialize(query, '&');
+	};
+	
+	path_setQuery = function(path, mix){
+		var query =  typeof mix !== 'string'
+			? query_serialize(mix, '&')
+			: mix;
+			
+		var i = path.indexOf('?');
+		if (i !== -1) {
+			path = path.substring(0, i);
+		}
+		return path + '?' + query;
+	};
 	
 	// == private
 	

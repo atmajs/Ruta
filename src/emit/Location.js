@@ -45,8 +45,8 @@ var Location = (function(){
 				route.value(route, current && current.params);
 			}
 		},
-		navigate: function(url, opts){
-			this.emitter.navigate(url, opts);
+		navigate: function(mix, opts){
+			this.emitter.navigate(mix, opts);
 		},
 		current: function(){
 			return this.collection.get(

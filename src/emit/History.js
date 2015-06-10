@@ -21,14 +21,15 @@ function HistoryEmitter(listener){
 }
 
 HistoryEmitter.prototype = {
-	navigate: function(url, opts){
-		if (url == null) {
+	navigate: function(mix, opts){
+		if (mix == null) {
 			this.changed();
 			return;
 		}
-		
+		var isQueryObject = typeof mix === 'object',
+			url = null;
 		if (opts != null && opts.extend === true) {
-			var query   = path_getQuery(url),
+			var query   = isQueryObject ? mix : path_getQuery(mix),
 				current = path_getQuery(location.search);
 				
 			if (current != null && query != null) {
@@ -39,8 +40,11 @@ HistoryEmitter.prototype = {
 					}
 				}
 				query = obj_extend(current, query);
-				url = path_setQuery(url, query);
+				url = path_setQuery(url || '', query);
 			}
+		}
+		if (url == null) {
+			url = isQueryObject ? path_setQuery('', mix) : mix;
 		}
 		
 		

@@ -33,11 +33,7 @@ var Ruta = {
 		return routes.get(path);
 	},
 	navigate: function(mix, opts){
-		var path = mix;
-		if (mix != null && typeof mix === 'object') {
-			path = '?' + query_serialize(mix, '&');
-		}
-		router_ensure().navigate(path, opts);
+		router_ensure().navigate(mix, opts);
 		return this;
 	},
 	current: function(){

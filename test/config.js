@@ -1,3 +1,3 @@
 module.exports = {
-	tests: ['**.test']
+	tests: ['/test/**.test']
 };

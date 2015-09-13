@@ -97,7 +97,8 @@ var route_match,
 		}
 
 
-		for (var i = 0, x, imax = parts.path.length; i < imax; i++){
+		var arr = parts.path;
+		for (var i = 0, x, imax = arr.length; i < imax; i++){
 
 			x = routePath[i];
 
@@ -105,21 +106,24 @@ var route_match,
 				return route.strict !== true;
 
 			if (typeof x === 'string') {
-				if (parts.path[i] === x)
+				if (arr[i] === x)
 					continue;
 
 				return false;
 			}
 
-			if (x.matcher && x.matcher.test(parts.path[i]) === false) {
-				return false;
-			}
+			if (x.matcher) {
+				if (x.matcher.test(arr[i]) === false)
+					return false;
 
-			if (x.optional)
-				return true;
-
-			if (x.alias)
 				continue;
+			}
+			if (x.optional) {
+				return true;
+			}
+			if (x.alias) {
+				continue;
+			}
 
 			return false;
 		}

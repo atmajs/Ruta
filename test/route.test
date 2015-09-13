@@ -94,6 +94,27 @@ include
 					]
 				})
 		},
+		'any': function() {
+			check('/*/foo', {
+				match: [
+					['/service/foo', {}],
+					['/baz/foo?action=remove', {action: 'remove'}]
+				],
+				fail: [
+					'/foo',
+					'/zfoo',
+					'/fooz'
+				]
+			});
+			check('/*/*/foo', {
+				match: [
+					['/service/qux/foo', {}]
+				],
+				fail: [
+					'/foo/foo'
+				]
+			});
+		},
 		'conditional': function(){
 			check('/service/:action(save|remove)', {
 				match: [

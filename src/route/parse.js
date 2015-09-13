@@ -98,6 +98,12 @@ var route_parseDefinition, // out route, definition
 				log_error('Strict part found after optional', definition);
 			// endif
 
+			if (x === '*') {
+				array.push({
+					matcher: new AnyMatcher()
+				});
+				continue;
+			}
 
 			if (isOptional)
 				gettingMatcher = false;
@@ -251,6 +257,14 @@ var route_parseDefinition, // out route, definition
 	StrMatcher.prototype = {
 		test: function(x) {
 			return x === this.str;
+		}
+	};
+	function AnyMatcher(str) {
+		this.str = str;
+	}
+	AnyMatcher.prototype = {
+		test: function(x) {
+			return true;
 		}
 	};
 }());

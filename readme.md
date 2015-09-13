@@ -17,6 +17,8 @@ Mainly used for an application routing, but can be used for any other purpose
 	- ``` /user ``` _(same as ``` !/user ```)_ does not match ``` /user/bob ``
 - begins with **part(s)**
 	- ``` ^/user ``` matches ``` /user/bob ```, but does not ``` /users ```
+- optional parts
+	- ``` /?foo ``` Matches only `/` and `/foo` paths
 - regexp - enclosed in parentheses '(regexp)'
 	- ``` (\.less$) ```
 	- ``` /user/:action(edit|delete) ```
@@ -66,7 +68,7 @@ ruta.Collection.prototype.add(route, obj <Any>);
   * }
  \*/
 ruta.Collection.prototype.get(path, ?method);
-    
+
 ```
 
 ```javascript
@@ -104,7 +106,7 @@ RutaJS supports History API and ```hashchanged``` routing.
 - `.navigate(url:String, ?options:Object)` Navigate the Router to the url
 
 	- `options`
-		
+
 		- `extend:Boolean` Preserve query string parameters, which are not in passed url
 
 #### Examples
@@ -114,7 +116,7 @@ RutaJS supports History API and ```hashchanged``` routing.
 var collection = new ruta.Collection();
 
 collection.add('/user/:id', myObject);
-collection.get('/user/10') // -> { key: '/user/:id', value: myObject, current: { id: 10 } } 
+collection.get('/user/10') // -> { key: '/user/:id', value: myObject, current: { id: 10 } }
 
 // Will match '/foo', '/foo/bar', ...
 collection.add('^/foo', x);
@@ -130,7 +132,7 @@ collection.add('/user/?:id')
 
 // Query String
 collection.add('/users', X);
-collection.get('/users?loc=DE') 
+collection.get('/users?loc=DE')
 //> { key: '/users', value: X, current: { params: { loc: 'DE' }, url: '/users?loc=DE' } }
 
 ```

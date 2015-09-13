@@ -1,14 +1,14 @@
-var route_parseDefinition, // out route, definition 
+var route_parseDefinition, // out route, definition
 
-	// path should be already matched by the route 
-	route_parsePath // route, path 
+	// path should be already matched by the route
+	route_parsePath // route, path
 	;
 
 (function(){
-		
-	
+
+
 	route_parseDefinition = function(route, definition) {
-		
+
 		var c = definition.charCodeAt(0);
 		switch(c){
 			case 33:
@@ -31,13 +31,13 @@ var route_parseDefinition, // out route, definition
 					log_error('parser - expect group closing');
 					end ++;
 				}
-				
+
 				route.match = new RegExp(definition.substring(start, end));
 				return;
 		}
-		
-		
-		
+
+
+
 		var parts = definition.split('/'),
 			search,
 			searchIndex,
@@ -47,8 +47,8 @@ var route_parseDefinition, // out route, definition
 			c0,
 			index,
 			c1;
-			
-		
+
+
 		var last = parts[imax - 1];
 		searchIndex = last.indexOf('?');
 		if (searchIndex > (imax === 1 ? -1 : 0)) {
@@ -56,168 +56,174 @@ var route_parseDefinition, // out route, definition
 			search = last.substring(searchIndex + 1);
 			parts[imax - 1] = last.substring(0, searchIndex);
 		}
-	
+
 		var matcher = '',
 			alias = null,
 			strictCount = 0;
-	
+
 		var gettingMatcher = true,
 			isOptional,
 			isAlias,
 			rgx;
-	
+
 		var array = route.path = [];
-		
+
 		for (; i < imax; i++) {
 			x = parts[i];
-			
-			if (x === '') 
+
+			if (x === '')
 				continue;
-			
-	
+
+
 			c0 = x.charCodeAt(0);
 			c1 = x.charCodeAt(1);
-	
+
 			isOptional = c0 === 63; /* ? */
 			isAlias = (isOptional ? c1 : c0) === 58; /* : */
 			index = 0;
-			
-			if (isOptional) 
+
+			if (isOptional)
 				index++;
-			
-			if (isAlias) 
+
+			if (isAlias)
 				index++;
-			
-	
-			if (index !== 0) 
+
+
+			if (index !== 0)
 				x = x.substring(index);
-			
-	
+
+
 			// if DEBUG
-			if (!isOptional && !gettingMatcher) 
+			if (!isOptional && !gettingMatcher)
 				log_error('Strict part found after optional', definition);
 			// endif
-	
-	
-			if (isOptional) 
+
+
+			if (isOptional)
 				gettingMatcher = false;
-			
+
 			var bracketIndex = x.indexOf('(');
 			if (isAlias && bracketIndex !== -1) {
 				var end = x.length - 1;
-				if (x[end] !== ')') 
+				if (x[end] !== ')')
 					end+= 1;
-				
+
 				rgx = new RegExp(rgx_aliasMatcher(x.substring(bracketIndex + 1, end)));
 				x = x.substring(0, bracketIndex);
 			}
-			
+
 			if (!isOptional && !isAlias) {
 				array.push(x);
 				continue;
 			}
-			
+
 			if (isAlias) {
 				array.push({
 					alias: x,
 					matcher: rgx,
 					optional: isOptional
 				});
+				continue;
 			}
-			
+			if (isOptional) {
+				array.push({
+					matcher: new StrMatcher(x),
+					optional: isOptional
+				});
+			}
 		}
-	
+
 		if (search) {
 			var query = route.query = {};
-			
+
 			parts = search.split('&');
-			
+
 			i = -1;
 			imax = parts.length;
-			
+
 			var key, value, str, eqIndex;
 			while(++i < imax){
 				str = parts[i];
-				
+
 				eqIndex = str.indexOf('=');
 				if (eqIndex === -1) {
 					query[str] = ''; // <empty string>
 					continue;
 				}
-				
+
 				key = str.substring(0, eqIndex);
 				value = str.substring(eqIndex + 1);
-				
+
 				if (value.charCodeAt(0) === 40) {
 					// (
 					value = new RegExp(rgx_aliasMatcher(value));
 				}
-				
+
 				query[key] = value;
 			}
-			
+
 			if (route.path.length === 0) {
 				route.strict = false;
 			}
 		}
 	};
-	
-	
+
+
 	route_parsePath = function(route, path) {
-		
+
 		var queryIndex = path.indexOf('?'),
-			
+
 			query = queryIndex === -1
 				? null
 				: path.substring(queryIndex + 1),
-			
+
 			current = {
 				path: path,
 				params: query == null
 					? {}
 					: query_deserialize(query, '&')
 			};
-		
+
 		if (route.query) {
 			// ensura aliased queries, like ?:debugger(d|debug)
 			for (var key in route.query){
-				
-				if (key[0] === '?') 
+
+				if (key[0] === '?')
 					key = key.substring(1);
-				
+
 				if (key[0] === ':') {
 					var alias = rgx_parsePartWithRegExpAlias(key),
 						name = alias.alias;
-					
+
 					current.params[name] = getAliasedValue(current.params, alias.matcher);
 				}
 			}
 		}
-	
+
 		if (queryIndex !== -1) {
 			path = path.substring(0, queryIndex);
 		}
-	
+
 		if (route.path != null) {
-				
+
 			var pathArr = path_split(path),
 				routePath = route.path,
 				routeLength = routePath.length,
-				
+
 				imax = pathArr.length,
 				i = 0,
 				part,
 				x;
-		
+
 			for (; i < imax; i++) {
 				part = pathArr[i];
 				x = i < routeLength ? routePath[i] : null;
-				
+
 				if (x) {
-					
-					if (typeof x === 'string') 
+
+					if (typeof x === 'string')
 						continue;
-					
+
 					if (x.alias) {
 						current.params[x.alias] = part;
 						continue;
@@ -225,17 +231,26 @@ var route_parseDefinition, // out route, definition
 				}
 			}
 		}
-	
+
 		return current;
 	};
 
-	
+
 	// = private
-	
+
 	function getAliasedValue(obj, matcher) {
 		for (var key in obj){
-			if (matcher.test(key)) 
+			if (matcher.test(key))
 				return obj[key];
 		}
 	}
+
+	function StrMatcher(str) {
+		this.str = str;
+	}
+	StrMatcher.prototype = {
+		test: function(x) {
+			return x === this.str;
+		}
+	};
 }());

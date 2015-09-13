@@ -1,22 +1,16 @@
+UTest({
+	'simple': function(){
 
-include
-	.inject('/lib/ruta.js')
-	.done(function(){
-		
-		
-		UTest({
-			'simple': function(){
-				
-				ruta.add('/user/:id', { any: true });
-				
-				
-				var obj = ruta.get('/user/20');
-				
-				assert(obj != null);
-				deepEq(obj.value, {any: true});
-			}
-		})
-	
-	
-	});
-	
+		ruta.add('/user/:id', { foo: true });
+
+		var PATH = '/user/20?a=xyz';
+		var obj = ruta.get(PATH);
+
+		is_(obj, 'Object');
+		deepEq_(obj.current, {
+			path: PATH,
+			params: { id: 20, a: 'xyz' }
+		});
+		deepEq_(obj.value, {foo: true});
+	}
+})

@@ -10,40 +10,40 @@ include
 			'/src/route/match.js',
 			'/src/route/Route.js')
 	.done(function() {
-		
+
 
 	function check(definition, data) {
 		var route = new Route(definition),
 			matches = data.match,
 			falsies = data.fail;
-		
+
 		if (matches) {
 			for (var i = 0, x, y, matched, imax = matches.length; i < imax; i++){
 				x = matches[i];
-				
+
 				if (typeof x === 'string') {
 					y = 0;
 				}else{
 					y = x[1];
 					x = x[0];
 				}
-				
+
 				matched = route_isMatch(x, route);
 				eq(matched, true, x);
-				
+
 				if (matched && y) {
 					deepEq(y, route_parsePath(route, x).params);
 				}
 			}
 		}
-		
+
 		if (falsies) {
 			for (var i = 0, x, imax = falsies.length; i < imax; i++){
 				x = falsies[i];
 				eq(route_isMatch(x, route), false, x);
 			}
 		}
-		
+
 		if (data.method) {
 			eq(route.method, data.method);
 		}
@@ -51,7 +51,7 @@ include
 
 
 	UTest({
-		
+
 		'simple': function(){
 				check('/user/:id', {
 					match: [
@@ -68,19 +68,31 @@ include
 						'/x/user/20'
 					]
 				});
-				
+
 				check('/user/:id/?:action', {
 					match: [
 						['/user/20/remove', {id: 20, action: 'remove'}],
 						['/user/bob', {id: 'bob'}]
 					]
 				})
-				
+
 				check('/:page/:tab/:anchor', {
 					match: [
 						['/mask/api/simple', { page: 'mask', tab: 'api', anchor: 'simple' }],
 					]
 				});
+
+				check('/?foo', {
+					match: [
+						['/foo?a=b', { a: 'b' }],
+						['/?c=d', { c: 'd' }],
+					],
+					fail: [
+						'/fooz',
+						'/afoo',
+						'/b/foo'
+					]
+				})
 		},
 		'conditional': function(){
 			check('/service/:action(save|remove)', {
@@ -98,22 +110,22 @@ include
 		'strict': function(){
 			check('!/user/:id', {
 				match: [
-					'/user/20', 
+					'/user/20',
 					['/user/20?some=value', {id: 20, some: 'value' }]
 				],
 				fail: [
 					'/user/20/some'
 				]
 			});
-			
+
 			check('!/', {
 				match:['/'],
 				fail: ['/tv']
 			});
 		},
-		
+
 		'method parser': function(){
-			
+
 			check('$post !/:action(save)', {
 				match: [
 					['/save', { action: 'save' }]
@@ -121,9 +133,9 @@ include
 				fail: ['/remove'],
 				method: 'POST'
 			});
-			
+
 		},
-		
+
 		'regex': function(){
 			check('^/:alias(^num[0-9]{1,2}$)', {
 				match: [
@@ -136,7 +148,7 @@ include
 					'/numx',
 					'/numer' ]
 			});
-			
+
 			check('(\\.less$)', {
 				match: [
 					[ '/style/main.less' ]
@@ -146,9 +158,9 @@ include
 				]
 			});
 		},
-		
+
 		'query': function(){
-			
+
 			check('?debug', {
 				match: [
 					 '/some/path?debug' ,
@@ -165,7 +177,7 @@ include
 					'/debug/path/debug?debugger'
 				]
 			});
-			
+
 			check('?debug=js', {
 				match: [
 					 '/some/path?debug=js' ,
@@ -175,7 +187,7 @@ include
 					'/debug/path/debug?debug&debug=jss'
 				]
 			});
-			
+
 			check('/:action/:part?debug=(js|less)', {
 				match: [
 					['/some/path?debug=js' , {
@@ -205,9 +217,9 @@ include
 				]
 			});
 		},
-		
+
 		'cli-parser': function(){
-			
+
 			[
 			  ['custom test --debug', '/custom/test?debug'],
 			  ['test -debug value foo', '/test/foo?debug=value'],
@@ -216,12 +228,12 @@ include
 			.forEach(function(test){
 				eq(path_fromCLI(test[0]), test[1]);
 			});
-			
+
 		}
-		
+
 	});
-	
-	
-	
+
+
+
 
 });

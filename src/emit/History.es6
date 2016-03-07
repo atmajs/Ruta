@@ -1,27 +1,29 @@
-function HistoryEmitter(listener){	
-	if (typeof window === 'undefined')
-		return null;
-	
-	if (!(window.history && window.history.pushState))
-		return null;
+class HistoryEmitter {
+	constructor (listener) {
+		this.listener = listener;
+		this.initial = location.pathname;
+		window.onpopstate = this.onpopstate.bind(this);
+	}
+	static supports () {
+		if (typeof window === 'undefined')
+			return false;
 
-	var that = this;
-	that.listener = listener;
-	that.initial = location.pathname;
-	
-	window.onpopstate = function(){
-		if (that.initial === location.pathname) {
-			that.initial = null;
+		if (!(window.history && window.history.pushState))
+			return false;
+
+		if (window.location.href !== document.baseURI) {
+			return false;
+		}
+		return true;
+	}
+	onpopstate () {
+		if (this.initial === location.pathname) {
+			this.initial = null;
 			return;
 		}
-		that.changed();
-	};
-	
-	return that;
-}
-
-HistoryEmitter.prototype = {
-	navigate: function(mix, opts){
+		this.changed();
+	}
+	navigate (mix, opts) {
 		if (mix == null) {
 			this.changed();
 			return;
@@ -31,7 +33,7 @@ HistoryEmitter.prototype = {
 		if (opts != null && opts.extend === true) {
 			var query   = isQueryObject ? mix : path_getQuery(mix),
 				current = path_getQuery(location.search);
-				
+
 			if (current != null && query != null) {
 				for (var key in current) {
 					// strict compare
@@ -46,16 +48,18 @@ HistoryEmitter.prototype = {
 		if (url == null) {
 			url = isQueryObject ? path_setQuery('', mix) : mix;
 		}
-		
-		
+
+
 		history.pushState({}, null, url);
 		this.initial = null;
 		this.changed();
-	},
-	changed: function(){
+	}
+
+	changed () {
 		this.listener.changed(location.pathname + location.search);
-	},
-	current: function(){
+	}
+
+	current () {
 		return location.pathname + location.search;
 	}
-};
+}

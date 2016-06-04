@@ -40,7 +40,7 @@ var query_deserialize,
 				val = null;
 			
 			query = query + (query ? delimiter : '') + key;
-			if (val != null) 
+			if (val /* unstrict */) 
 				query += '=' + encode(val);
 		}
 	

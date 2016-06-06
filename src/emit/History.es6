@@ -1,7 +1,7 @@
 class HistoryEmitter {
 	constructor (listener) {
 		this.listener = listener;
-		this.initial = location.pathname;
+		this.initial = location.href;
 		window.onpopstate = this.onpopstate.bind(this);
 	}
 	static supports () {
@@ -17,7 +17,7 @@ class HistoryEmitter {
 		return true;
 	}
 	onpopstate () {
-		if (this.initial === location.pathname) {
+		if (this.initial === location.href) {
 			this.initial = null;
 			return;
 		}

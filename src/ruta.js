@@ -24,7 +24,8 @@ var Ruta = {
 	},
 
 	add: function(regpath, mix){
-		router_ensure().add(regpath, mix);
+		router_ensure();
+		routes.add(regpath, mix);
 		return this;
 	},
 

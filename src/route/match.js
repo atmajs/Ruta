@@ -1,25 +1,35 @@
 var route_match,
+	route_matchAll,
 	route_isMatch
 	;
 
 (function(){
 
-	route_match = function(url, routes, currentMethod){
-
-		var parts = parts_deserialize(url);
-
-
-		for (var i = 0, route, imax = routes.length; i < imax; i++){
-			route = routes[i];
-
-			if (route_isMatch(parts, route, currentMethod)) {
-
+	route_match = function(url, routes, method){
+		var parts = parts_deserialize(url),
+			imax = routes.length,
+			i = -1;
+		while (++i < imax) {
+			var route = routes[i];
+			if (route_isMatch(parts, route, method)) {
 				route.current = route_parsePath(route, url);
 				return route;
 			}
 		}
-
 		return null;
+	};
+	route_matchAll = function(url, routes, method){
+		var parts = parts_deserialize(url),
+			imax = routes.length,
+			i = -1, out = [];
+		while (++i < imax) {
+			var route = routes[i];
+			if (route_isMatch(parts, route, method)) {
+				route.current = route_parsePath(route, url);
+				out.push(route);
+			}
+		}
+		return out;
 	};
 
 	route_isMatch = function(parts, route, currentMethod) {

@@ -30,9 +30,9 @@
 	// import ../src/utils/rgx.js
 	// import ../src/utils/parts.js
 
-	// import ../src/route/Collection.js
+	// import ../src/route/exports.js
 
-	// import ../src/emit/Location.js
+	// import ../src/emit/exports.js
 
 	// import ../src/api/utils.js
 	// import ../src/ruta.js

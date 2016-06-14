@@ -1,4 +1,3 @@
-
 include
 	.inject('/lib/ruta.js')
 	.done(function(){

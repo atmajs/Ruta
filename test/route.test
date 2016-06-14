@@ -1,5 +1,3 @@
-
-
 include
 	.inject('/src/vars.js',
 			'/src/utils/path.js',
@@ -8,7 +6,7 @@ include
 			'/src/utils/rgx.js',
 			'/src/route/parse.js',
 			'/src/route/match.js',
-			'/src/route/Route.js')
+			'/src/route/Route.es6')
 	.done(function() {
 
 

@@ -91,7 +91,7 @@ will be called, when router emits the URL-change event.
 RutaJS supports History API and ```hashchanged``` routing.
 
 
-> :warning: _ruta_ object is already the route collection itself. And there is History API Router bound to this collection.
+> :warning: _ruta_ object is already the route collection itself. And there is History API Router bound to this collection, or `hash` as a fallback;
 
 
 ### Api
@@ -103,11 +103,15 @@ RutaJS supports History API and ```hashchanged``` routing.
 
 - `.get(url:String)` Gets first object from the collection matches the url
 
+- `.getAll(url:String)` Gets all objects from the collection matches the url
+
 - `.navigate(url:String, ?options:Object)` Navigate the Router to the url
 
 	- `options`
 
-		- `extend:Boolean` Preserve query string parameters, which are not in passed url
+		- `extend:Boolean` Preserve current query string parameters, which are not in url string
+		- `silent:Boolean` Default: `false`; Do not trigger change event
+		- `replace:Boolean` Default: `false`; For the History API `replaceState` is used.
 
 #### Examples
 

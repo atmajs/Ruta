@@ -28,6 +28,7 @@ class RouteCollection {
 			}
 			this.routes.splice(i, 1);
 			i--;
+			imax--;
 		}
 	}
 	get (path, method){

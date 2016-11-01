@@ -54,15 +54,13 @@ class HistoryEmitter {
 		} else {
 			history.pushState({}, null, url);
 		}
+		
 		this.initial = null;
-
-		if (opts == null || opts.silent !== true) {
-			this.changed();
-		}
+		this.changed(opts);
 	}
 
-	changed () {
-		this.listener.changed(location.pathname + location.search);
+	changed (opts) {
+		this.listener.changed(this.current(), opts);
 	}
 
 	current () {

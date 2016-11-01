@@ -24,9 +24,9 @@ class LocationEmitter {
 		}
 	}
 
-	changed (path) {
+	changed (path, opts) {
 		var item = this.collection.get(path);
-		if (item) {
+		if (item && (opts == null || opts.silent !== true)) {
 			this.action(item);
 		}
 		var listeners = this.listeners.getAll(path),

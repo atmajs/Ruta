@@ -44,8 +44,8 @@ class LocationEmitter {
 		if (typeof route.value === 'function') {
 			var current = route.current;
 			var params = current && current.params;
-			if (opts.params != null) {
-				params = obj_default(params, opts.params);
+			if (opts && opts.params != null) {
+				current.params = params = obj_default(params, opts.params);
 			}
 			route.value(route, params);
 		}

@@ -1,5 +1,6 @@
 class HashEmitter {
 	constructor (listener) {
+		this.opts = null;
 		this.listener = listener;
 		window.onhashchange = this.onhashchange.bind(this)
 	}
@@ -15,22 +16,23 @@ class HashEmitter {
 	}
 
 	onhashchange () {
-		this.changed(location.hash);
+		this.changed();
 	}
 
-	navigate (hash) {
+	navigate (hash, opts) {
+		this.opts = opts;
+		
 		if (hash == null) {
-			this.changed(location.hash);
+			this.changed();
 			return;
 		}
-
 		location.hash = hash;
 	}
 
-	changed (hash) {
-		this
-			.listener
-			.changed(HashEmitter.normalizeHash(hash));
+	changed (opts_) {
+		var opts = opts_ || this.opts; 
+		this.opts = null;
+		this.listener.changed(this.current(), opts);
 	}
 
 	current () {

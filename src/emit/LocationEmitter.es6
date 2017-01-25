@@ -25,21 +25,29 @@ class LocationEmitter {
 	}
 
 	changed (path, opts) {
-		var item = this.collection.get(path);
-		if (item && (opts == null || opts.silent !== true)) {
-			this.action(item);
+		if (opts && opts.silent === true) {
+			return;
 		}
-		var listeners = this.listeners.getAll(path),
-			imax = listeners.length,
+
+		var route = this.collection.get(path);
+		if (route) {
+			this.action(route, opts);
+		}
+		var routes = this.listeners.getAll(path),
+			imax = routes.length,
 			i = -1;
 		while ( ++i < imax ) {
-			listeners[i].value(listeners[i]);
+			this.action(routes[i], opts);			
 		}
 	}
-	action (route) {
+	action (route, opts) {
 		if (typeof route.value === 'function') {
 			var current = route.current;
-			route.value(route, current && current.params);
+			var params = current && current.params;
+			if (opts.params != null) {
+				params = obj_default(params, opts.params);
+			}
+			route.value(route, params);
 		}
 	}
 	navigate (mix, opts) {

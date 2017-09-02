@@ -1,0 +1,20 @@
+import Collection from '../../src/route/RouteCollection'
+
+const routes = new Collection();
+
+UTest({
+	'simple': function(){
+
+		ruta.add('/user/:id', { foo: true });
+
+		var PATH = '/user/20?a=xyz';
+		var obj = ruta.get(PATH);
+
+		is_(obj, 'Object');
+		deepEq_(obj.current, {
+			path: PATH,
+			params: { id: 20, a: 'xyz' }
+		});
+		deepEq_(obj.value, {foo: true});
+	}
+})

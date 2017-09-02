@@ -12,6 +12,7 @@
         "url": "git://github.com/atmajs/Ruta.git"
     },
     "devDependencies": {
+        "@types/sinon": "^2.3.3",
         "app-bundler": "0.0.33",
         "atma": "^0.10.81",
         "atma-loader-ts": "^1.0.0"
@@ -67,5 +68,8 @@
                 }
             }
         }
+    },
+    "dependencies": {
+        "@types/jquery": "^3.2.12"
     }
 }

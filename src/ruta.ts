@@ -17,7 +17,7 @@ export default {
 
 	Collection: RouteCollection,
 
-	setRouterType: function(type){
+	setRouterType (type){
 		if (router == null)
 			router = new Location(routes, type);
 		return this;
@@ -28,36 +28,44 @@ export default {
 		return this;
 	},
 
-	add: function(regpath, mix){
+	add (regpath, mix){
 		router_ensure();
 		routes.add(regpath, mix);
 		return this;
 	},
 
-	on: function(regpath, mix){
+	on (regpath, mix){
 		router_ensure().on(regpath, mix);
 		return this;
 	},
-	off: function(regpath, mix){
+	off (regpath, mix){
 		router_ensure().off(regpath, mix);
 		return this;
 	},
+	onLifecycle (def, cb) {
+		router_ensure().onLifecycle(def, cb);
+		return this;
+	},
+	offLifecycle (def, cb) {
+		router_ensure().offLifecycle(def, cb);
+		return this;
+	},
 
-	get: function(path){
+	get (path){
 		return routes.get(path);
 	},
-	navigate: function(mix, opts){
+	navigate (mix, opts){
 		router_ensure().navigate(mix, opts);
 		return this;
 	},
-	current: function(){
+	current (){
 		return router_ensure().current();
 	},
-	currentPath: function(){
+	currentPath (){
 		return router_ensure().currentPath();
 	},
 
-	notifyCurrent: function(){
+	notifyCurrent (){
 		router_ensure().navigate();
 		return this;
 	},

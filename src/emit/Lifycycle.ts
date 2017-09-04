@@ -13,7 +13,7 @@ export default class Lifecycle {
         let current = route_match(this.location.currentPath(), [ this.route ]);
         
         this.state = {
-            state: State.Initial,
+            type: State.Initial,
             route: current
         };
         this.callback(this.state);
@@ -25,18 +25,18 @@ export default class Lifecycle {
             if (this.state.route == null) {
                 return;
             }
-            state.state  = State.Leave;
+            state.type  = State.Leave;
             state.route = null;
             this.callback(state);
             return;
         }        
         if (this.state.route == null) {
-            state.state  = State.Enter;
+            state.type  = State.Enter;
             state.route = current;
             this.callback(state);
             return;
         }        
-        state.state  = State.Change;
+        state.type  = State.Change;
         state.route = current;
         this.callback(state);
     }
@@ -53,6 +53,6 @@ const State = {
 };
 
 interface ILifeCycleEvent {
-    state: string,
+    type: string,
     route: Route
 }

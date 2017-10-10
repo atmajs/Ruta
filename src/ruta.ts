@@ -2,6 +2,7 @@ import RouteCollection from './route/RouteCollection'
 import Location from './emit/LocationEmitter'
 import ApiUtils from './api/utils'
 import options from './options'
+import './mask/attr/anchor-dynamic'
 
 let routes = new RouteCollection(),
 	router: Location;
@@ -54,7 +55,7 @@ export default {
 	get (path){
 		return routes.get(path);
 	},
-	navigate (mix, opts){
+	navigate (mix, opts?){
 		router_ensure().navigate(mix, opts);
 		return this;
 	},

@@ -1,3 +1,2 @@
-import { Ruta } from './globals'
-
+import Ruta from './ruta'
 export = Ruta

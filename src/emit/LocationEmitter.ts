@@ -4,14 +4,15 @@ import HistoryEmitter from './History'
 import MemoryEmitter from './Memory'
 import { log_error } from '../utils/log'
 import { obj_default } from '../utils/obj'
-import { ILocationSource } from './ILocationSource'
+import { ILocationSource, LocationNavigateOptions } from './ILocationSource'
 import Lifecycle from './Lifycycle'
+import { Stack } from './Stack';
 
 export default class LocationEmitter {
 
 	public listeners = new RouteCollection()
 	public lifecycles: Lifecycle[] = []
-	public emitter: ILocationSource
+	public emitter: ILocationSource	
 
 	constructor (public collection: RouteCollection = new RouteCollection(), type: 'hash' | 'history' | 'memory' = null) {
 
@@ -38,23 +39,23 @@ export default class LocationEmitter {
 		}
 	}
 
-	changed (path, opts?: { silent?: true }) {
-		if (opts && opts.silent === true) {
+	onChanged (path, opts: LocationNavigateOptions) {
+		if (opts.silent === true) {
 			return;
 		}
 
-		var route = this.collection.get(path);
+		let route = this.collection.get(path);
 		if (route) {
-			this.action(route, opts);
+			this.doAction(route, opts);
 		}
-		var routes = this.listeners.getAll(path),
+		let routes = this.listeners.getAll(path),
 			imax = routes.length,
 			i = -1;
 		while ( ++i < imax ) {
-			this.action(routes[i], opts);			
+			this.doAction(routes[i], opts);			
 		}
 	}
-	action (route, opts) {
+	private doAction (route, opts: LocationNavigateOptions) {
 		if (typeof route.value === 'function') {
 			var current = route.current;
 			var params = current && current.params;
@@ -64,8 +65,24 @@ export default class LocationEmitter {
 			route.value(route, params);
 		}
 	}
-	navigate (mix?, opts?) {
+	navigate (mix?, opts: LocationNavigateOptions = new LocationNavigateOptions()) {
 		this.emitter.navigate(mix, opts);
+	}
+	back () {
+		if (Stack.hasBack()) {
+			this.emitter.back();
+		}
+	}
+	forward () {
+		if (Stack.hasForwad()) {
+			this.emitter.forward();
+		}
+	}
+	getBackStack () {
+		return Stack.backStates;
+	}
+	getForwardStack () {
+		return Stack.forwardStates;
 	}
 	current () {
 		return this.collection.get(
@@ -93,6 +110,5 @@ export default class LocationEmitter {
 				i--;
 			}
 		}
-		
 	}
 };

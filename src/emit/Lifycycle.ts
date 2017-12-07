@@ -1,6 +1,7 @@
 import LocationEmitter from './LocationEmitter'
 import Route from '../route/Route'
 import { route_match } from '../route/match'
+import { LocationNavigateOptions } from './ILocationSource';
 
 export default class Lifecycle {
     route: Route
@@ -13,30 +14,36 @@ export default class Lifecycle {
         let current = route_match(this.location.currentPath(), [ this.route ]);
         
         this.state = {
-            type: State.Initial,
+            type: EventType.Initial,
+            direction: Direction.Forward,
             route: current
         };
         this.callback(this.state);
     }
-    changed (route) {
+    changed (route, opts: LocationNavigateOptions) {
+        this.state.direction = opts.step < 0
+            ? Direction.Back
+            : Direction.Forward
+            ;
+
         let state = this.state;
         let current = route_match(this.location.currentPath(), [ this.route ]);
         if (current == null) {
             if (this.state.route == null) {
                 return;
             }
-            state.type  = State.Leave;
-            state.route = null;
+            state.type  = EventType.Leave;
+            state.route = null;           
             this.callback(state);
             return;
         }        
         if (this.state.route == null) {
-            state.type  = State.Enter;
+            state.type  = EventType.Enter;
             state.route = current;
             this.callback(state);
             return;
         }        
-        state.type  = State.Change;
+        state.type  = EventType.Change;
         state.route = current;
         this.callback(state);
     }
@@ -45,14 +52,19 @@ export default class Lifecycle {
     }
 }
 
-const State = {
-    Initial: 'initial',
-    Enter: 'enter',
-    Leave: 'leave',
-    Change: 'change'
+export enum EventType {
+    Initial = 'initial',
+    Enter = 'enter',
+    Leave = 'leave',
+    Change = 'change'
 };
+export enum Direction {
+    Forward = 'forward',
+    Back = 'back'
+}
 
-interface ILifeCycleEvent {
-    type: string,
+export interface ILifeCycleEvent {
+    type: EventType,
+    direction: Direction,
     route: Route
 }

@@ -8,6 +8,7 @@ declare module 'ruta' {
 declare module 'ruta/ruta' {
     import RouteCollection from 'ruta/route/RouteCollection';
     import './mask/attr/anchor-dynamic';
+    import { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
     const _default: {
         Collection: typeof RouteCollection;
         setRouterType(type: any): any;
@@ -15,12 +16,14 @@ declare module 'ruta/ruta' {
         add(regpath: any, mix: any): any;
         on(regpath: any, mix: any): any;
         off(regpath: any, mix: any): any;
-        onLifecycle(def: any, cb: any): any;
-        offLifecycle(def: any, cb: any): any;
+        onLifecycle(def: string, cb: (event: ILifeCycleEvent) => void): any;
+        offLifecycle(def: string, cb: any): any;
         get(path: any): any;
         navigate(mix: any, opts?: any): any;
         current(): any;
         currentPath(): string;
+        getBackStack(): any[];
+        getForwardStack(): any[];
         notifyCurrent(): any;
         parse: (definition: any, path: any) => {
             path: any;
@@ -70,6 +73,37 @@ declare module 'ruta/route/RouteCollection' {
     }
 }
 
+declare module 'ruta/emit/Lifycycle' {
+    import LocationEmitter from 'ruta/emit/LocationEmitter';
+    import Route from 'ruta/route/Route';
+    import { LocationNavigateOptions } from 'ruta/emit/ILocationSource';
+    export default class Lifecycle {
+        location: LocationEmitter;
+        definition: string;
+        callback: (ILifeCycleEvent) => void;
+        route: Route;
+        state: ILifeCycleEvent;
+        constructor(location: LocationEmitter, definition: string, callback: (ILifeCycleEvent) => void);
+        changed(route: any, opts: LocationNavigateOptions): void;
+        dispose(): void;
+    }
+    export enum EventType {
+        Initial = "initial",
+        Enter = "enter",
+        Leave = "leave",
+        Change = "change",
+    }
+    export enum Direction {
+        Forward = "forward",
+        Back = "back",
+    }
+    export interface ILifeCycleEvent {
+        type: EventType;
+        direction: Direction;
+        route: Route;
+    }
+}
+
 declare module 'ruta/route/Route' {
     export default class Route {
         definition: string;
@@ -82,6 +116,58 @@ declare module 'ruta/route/Route' {
         };
         path: string;
         constructor(definition: string, value?: string | any);
+    }
+}
+
+declare module 'ruta/emit/LocationEmitter' {
+    import RouteCollection from 'ruta/route/RouteCollection';
+    import { ILocationSource, LocationNavigateOptions } from 'ruta/emit/ILocationSource';
+    import Lifecycle from 'ruta/emit/Lifycycle';
+    export default class LocationEmitter {
+        collection: RouteCollection;
+        listeners: RouteCollection;
+        lifecycles: Lifecycle[];
+        emitter: ILocationSource;
+        constructor(collection?: RouteCollection, type?: 'hash' | 'history' | 'memory');
+        onChanged(path: any, opts: LocationNavigateOptions): void;
+        navigate(mix?: any, opts?: LocationNavigateOptions): void;
+        back(): void;
+        forward(): void;
+        getBackStack(): any[];
+        getForwardStack(): any[];
+        current(): any;
+        currentPath(): string;
+        on(def: any, cb: any): void;
+        off(def: any, cb: any): void;
+        onLifecycle(def: any, cb: any): void;
+        offLifecycle(def: any, cb: any): void;
+    }
+}
+
+declare module 'ruta/emit/ILocationSource' {
+    export class LocationNavigateOptions {
+            /**
+                * History step. 1: Forward, 0: Replace Current, -1-(-n): Back
+                * @default: 1
+                * */
+            step?: number;
+            /**
+                * Backcompat.
+                * @deprecated Use `step:0`
+                */
+            replace?: boolean;
+            /** When true and query arguments are used, than navigation extends current query */
+            extend?: boolean;
+            /** When false listeners are not notified */
+            silent?: boolean;
+            /** Additional arguments which will be attached to the routes model params */
+            params?: any;
+    }
+    export interface ILocationSource {
+            navigate(path: object | string, opts?: LocationNavigateOptions): any;
+            back(): any;
+            forward(): any;
+            current(): string;
     }
 }
 

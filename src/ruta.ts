@@ -3,6 +3,7 @@ import Location from './emit/LocationEmitter'
 import ApiUtils from './api/utils'
 import options from './options'
 import './mask/attr/anchor-dynamic'
+import { ILifeCycleEvent } from './emit/Lifycycle';
 
 let routes = new RouteCollection(),
 	router: Location;
@@ -19,8 +20,9 @@ export default {
 	Collection: RouteCollection,
 
 	setRouterType (type){
-		if (router == null)
+		if (router == null) {
 			router = new Location(routes, type);
+		}
 		return this;
 	},
 
@@ -43,11 +45,11 @@ export default {
 		router_ensure().off(regpath, mix);
 		return this;
 	},
-	onLifecycle (def, cb) {
+	onLifecycle (def: string, cb: (event: ILifeCycleEvent) => void) {
 		router_ensure().onLifecycle(def, cb);
 		return this;
 	},
-	offLifecycle (def, cb) {
+	offLifecycle (def: string, cb: any) {
 		router_ensure().offLifecycle(def, cb);
 		return this;
 	},
@@ -65,7 +67,12 @@ export default {
 	currentPath (){
 		return router_ensure().currentPath();
 	},
-
+	getBackStack () {
+		return router_ensure().getBackStack();
+	},
+	getForwardStack () {
+		return router_ensure().getForwardStack();
+	},
 	notifyCurrent (){
 		router_ensure().navigate();
 		return this;

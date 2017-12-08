@@ -53,13 +53,14 @@ export default class HistoryEmitter implements ILocationSource {
 
 		let state = Stack.create(this.current());
 		let direction = Direction.Forward;
+		
 		let step = getStep(opts);		
 		if (step === 0) {
 			history.replaceState(state, null, url);
-			Stack.push(state);
+			Stack.replace(state);
 		} else {
 			history.pushState(state, null, url);
-			Stack.replace(state);
+			Stack.push(state);
 		}
 
 		opts.step = 1;

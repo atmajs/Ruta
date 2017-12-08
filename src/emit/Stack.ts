@@ -14,10 +14,13 @@ export namespace Stack {
 		forwardStates.length = 0;
 	}
 	export function replace (x) {
-		backStates[backStates.length - 1] = x;
+		backStates[Math.max(0, backStates.length - 1)] = x;
 	}
 	export function last () {
-		return backStates[backStates.length - 1];
+		return backStates.length === 0 
+			? null 
+			: backStates[backStates.length - 1]
+			;
 	}
 	export function next () {
 		return forwardStates[0];

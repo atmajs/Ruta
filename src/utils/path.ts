@@ -24,8 +24,7 @@ export function path_normalize (str: string): string {
 };
 
 export function path_split (path: string): string[] {
-	path = path_normalize(path);
-	
+	path = path_normalize(path);	
 	return path === ''
 		? []
 		: path.split('/');

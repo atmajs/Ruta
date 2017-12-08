@@ -30,7 +30,6 @@ export function parts_deserialize(url: string): UrlSegments {
 			? url
 			: url.substring(0, query);
 
-
 	return {
 		path: path_split(path),
 		query: query === -1

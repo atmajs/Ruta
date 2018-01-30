@@ -20,6 +20,13 @@ export class LocationNavigateOptions {
     params?: any = null    
 }
 
+export class LocationBackOptions {
+    default?: {
+        url: string
+        opts?: LocationNavigateOptions
+    }
+}
+
 export interface ILocationSource {
     navigate (path: object | string, opts?: LocationNavigateOptions)
     back()

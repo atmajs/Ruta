@@ -9,6 +9,7 @@ declare module 'ruta/ruta' {
     import RouteCollection from 'ruta/route/RouteCollection';
     import './mask/attr/anchor-dynamic';
     import { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
+    import { LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
     const _default: {
         Collection: typeof RouteCollection;
         setRouterType(type: any): any;
@@ -19,7 +20,9 @@ declare module 'ruta/ruta' {
         onLifecycle(def: string, cb: (event: ILifeCycleEvent) => void): any;
         offLifecycle(def: string, cb: any): any;
         get(path: any): any;
-        navigate(mix: any, opts?: any): any;
+        navigate(mix: any, opts?: LocationNavigateOptions): any;
+        back(opts?: LocationBackOptions): void;
+        forward(): void;
         current(): any;
         currentPath(): string;
         getBackStack(): any[];
@@ -104,46 +107,6 @@ declare module 'ruta/emit/Lifycycle' {
     }
 }
 
-declare module 'ruta/route/Route' {
-    export default class Route {
-        definition: string;
-        value: string | any;
-        method: string;
-        strict: boolean;
-        current: any;
-        query: {
-            [key: string]: any;
-        };
-        path: string;
-        constructor(definition: string, value?: string | any);
-    }
-}
-
-declare module 'ruta/emit/LocationEmitter' {
-    import RouteCollection from 'ruta/route/RouteCollection';
-    import { ILocationSource, LocationNavigateOptions } from 'ruta/emit/ILocationSource';
-    import Lifecycle from 'ruta/emit/Lifycycle';
-    export default class LocationEmitter {
-        collection: RouteCollection;
-        listeners: RouteCollection;
-        lifecycles: Lifecycle[];
-        emitter: ILocationSource;
-        constructor(collection?: RouteCollection, type?: 'hash' | 'history' | 'memory');
-        onChanged(path: any, opts: LocationNavigateOptions): void;
-        navigate(mix?: any, opts?: LocationNavigateOptions): void;
-        back(): void;
-        forward(): void;
-        getBackStack(): any[];
-        getForwardStack(): any[];
-        current(): any;
-        currentPath(): string;
-        on(def: any, cb: any): void;
-        off(def: any, cb: any): void;
-        onLifecycle(def: any, cb: any): void;
-        offLifecycle(def: any, cb: any): void;
-    }
-}
-
 declare module 'ruta/emit/ILocationSource' {
     export class LocationNavigateOptions {
             /**
@@ -163,11 +126,57 @@ declare module 'ruta/emit/ILocationSource' {
             /** Additional arguments which will be attached to the routes model params */
             params?: any;
     }
+    export class LocationBackOptions {
+            default?: {
+                    url: string;
+                    opts?: LocationNavigateOptions;
+            };
+    }
     export interface ILocationSource {
             navigate(path: object | string, opts?: LocationNavigateOptions): any;
             back(): any;
             forward(): any;
             current(): string;
+    }
+}
+
+declare module 'ruta/route/Route' {
+    export default class Route {
+        definition: string;
+        value: string | any;
+        method: string;
+        strict: boolean;
+        current: any;
+        query: {
+            [key: string]: any;
+        };
+        path: string;
+        constructor(definition: string, value?: string | any);
+    }
+}
+
+declare module 'ruta/emit/LocationEmitter' {
+    import RouteCollection from 'ruta/route/RouteCollection';
+    import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
+    import Lifecycle from 'ruta/emit/Lifycycle';
+    export default class LocationEmitter {
+        collection: RouteCollection;
+        listeners: RouteCollection;
+        lifecycles: Lifecycle[];
+        emitter: ILocationSource;
+        constructor(collection?: RouteCollection, type?: 'hash' | 'history' | 'memory');
+        onChanged(path: any, opts: LocationNavigateOptions): void;
+        navigate(mix?: any, opts?: LocationNavigateOptions): void;
+        back(opts?: LocationBackOptions): void;
+        forward(): void;
+        getBackStack(): any[];
+        getForwardStack(): any[];
+        current(): any;
+        currentPath(): string;
+        on(def: any, cb: any): void;
+        off(def: any, cb: any): void;
+        onLifecycle(def: any, cb: any): void;
+        offLifecycle(def: any, cb: any): void;
     }
 }
 

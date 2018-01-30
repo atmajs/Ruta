@@ -4,7 +4,7 @@ import HistoryEmitter from './History'
 import MemoryEmitter from './Memory'
 import { log_error } from '../utils/log'
 import { obj_default } from '../utils/obj'
-import { ILocationSource, LocationNavigateOptions } from './ILocationSource'
+import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from './ILocationSource'
 import Lifecycle from './Lifycycle'
 import { Stack } from './Stack';
 
@@ -68,9 +68,16 @@ export default class LocationEmitter {
 	navigate (mix?, opts: LocationNavigateOptions = new LocationNavigateOptions()) {
 		this.emitter.navigate(mix, opts);
 	}
-	back () {
+	back (opts?: LocationBackOptions) {
 		if (Stack.hasBack()) {
 			this.emitter.back();
+			return;
+		}
+		if (opts != null && opts.default != null) {
+			let navOptions = opts.default.opts || new LocationNavigateOptions();
+			navOptions.step = 0;
+			this.navigate(opts.default.url, navOptions);
+			return;
 		}
 	}
 	forward () {

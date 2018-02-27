@@ -5,6 +5,7 @@ import options from './options'
 import './mask/attr/anchor-dynamic'
 import { ILifeCycleEvent } from './emit/Lifycycle';
 import { LocationNavigateOptions, LocationBackOptions } from './emit/ILocationSource';
+import Route from './route/Route';
 
 let routes = new RouteCollection(),
 	router: Location;
@@ -55,13 +56,10 @@ export default {
 		return this;
 	},
 
-	get (path: string){
-		if (router != null && router.type === 'hash' && path.indexOf('#') !== -1) {
-			path = path.substr(path.indexOf('#') + 1);
-		}
+	get (path: string): Route {
 		return routes.get(path);
 	},
-	navigate (mix, opts?: LocationNavigateOptions){
+	navigate (mix, opts?: LocationNavigateOptions) {
 		router_ensure().navigate(mix, opts);
 		return this;
 	},

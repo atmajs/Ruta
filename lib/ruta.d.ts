@@ -10,6 +10,7 @@ declare module 'ruta/ruta' {
     import './mask/attr/anchor-dynamic';
     import { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
     import { LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
+    import Route from 'ruta/route/Route';
     const _default: {
         Collection: typeof RouteCollection;
         setRouterType(type: any): any;
@@ -19,11 +20,11 @@ declare module 'ruta/ruta' {
         off(regpath: any, mix: any): any;
         onLifecycle(def: string, cb: (event: ILifeCycleEvent) => void): any;
         offLifecycle(def: string, cb: any): any;
-        get(path: string): any;
+        get(path: string): Route;
         navigate(mix: any, opts?: LocationNavigateOptions): any;
         back(opts?: LocationBackOptions): void;
         forward(): void;
-        current(): any;
+        current(): Route;
         currentPath(): string;
         getBackStack(): any[];
         getForwardStack(): any[];
@@ -60,14 +61,13 @@ declare module 'ruta/route/RouteCollection' {
     import Route from 'ruta/route/Route';
     export default class RouteCollection {
         routes: Route[];
-        constructor();
         /** alias for `push` */
         add(def: string, value: any): this;
         push(def: string, value: any): this;
         unshift(def: string, value: any): this;
         remove(def: string, value: any): void;
-        get(path: any, method?: any): any;
-        getAll(path: any, method?: any): any[];
+        get(path: string, method?: string): Route;
+        getAll(path: string, method?: string): any[];
         clear(): this;
         static parse(definition: any, path: any): {
             path: any;
@@ -159,6 +159,7 @@ declare module 'ruta/emit/LocationEmitter' {
     import RouteCollection from 'ruta/route/RouteCollection';
     import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
     import Lifecycle from 'ruta/emit/Lifycycle';
+    import Route from 'ruta/route/Route';
     export default class LocationEmitter {
         collection: RouteCollection;
         type: 'hash' | 'history' | 'memory';
@@ -166,13 +167,13 @@ declare module 'ruta/emit/LocationEmitter' {
         lifecycles: Lifecycle[];
         emitter: ILocationSource;
         constructor(collection?: RouteCollection, type?: 'hash' | 'history' | 'memory');
-        onChanged(path: any, opts: LocationNavigateOptions): void;
+        onChanged(path: any, opts?: LocationNavigateOptions): void;
         navigate(mix?: any, opts?: LocationNavigateOptions): void;
         back(opts?: LocationBackOptions): void;
         forward(): void;
         getBackStack(): any[];
         getForwardStack(): any[];
-        current(): any;
+        current(): Route;
         currentPath(): string;
         on(def: any, cb: any): void;
         off(def: any, cb: any): void;

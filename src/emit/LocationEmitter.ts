@@ -7,6 +7,7 @@ import { obj_default } from '../utils/obj'
 import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from './ILocationSource'
 import Lifecycle from './Lifycycle'
 import { Stack } from './Stack';
+import Route from '../route/Route';
 
 export default class LocationEmitter {
 
@@ -39,8 +40,8 @@ export default class LocationEmitter {
 		}
 	}
 
-	onChanged (path, opts: LocationNavigateOptions) {
-		if (opts.silent === true) {
+	onChanged (path, opts: LocationNavigateOptions = null) {
+		if (opts && opts.silent === true) {
 			return;
 		}
 
@@ -55,7 +56,7 @@ export default class LocationEmitter {
 			this.doAction(routes[i], opts);			
 		}
 	}
-	private doAction (route, opts: LocationNavigateOptions) {
+	private doAction (route, opts: LocationNavigateOptions = null) {
 		if (typeof route.value === 'function') {
 			var current = route.current;
 			var params = current && current.params;
@@ -91,7 +92,7 @@ export default class LocationEmitter {
 	getForwardStack () {
 		return Stack.forwardStates;
 	}
-	current () {
+	current (): Route {
 		return this.collection.get(
 			this.currentPath()
 		);

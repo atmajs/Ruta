@@ -1,8 +1,9 @@
 import { parts_deserialize, parts_serialize } from '../utils/parts'
 import { rgx_parsePartWithRegExpAlias } from '../utils/rgx'
 import { route_parsePath } from './route_utils'
+import Route from './Route';
 
-export function route_match(url, routes, method: string = null) {
+export function route_match(url: string, routes: Route[], method: string = null) {
 	var parts = parts_deserialize(url),
 		imax = routes.length,
 		i = -1;

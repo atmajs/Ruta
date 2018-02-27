@@ -3,10 +3,8 @@ import {route_match, route_matchAll } from './match'
 import { route_parseDefinition, route_parsePath } from './route_utils'
 
 export default class RouteCollection {
-	routes: Route[]
-	constructor () {
-		this.routes = [];
-	}
+	//type: 'url' | 'hash' = 'url'
+	routes: Route[] = []	
 	/** alias for `push` */
 	add (def: string, value: any): this {
 		this.push(def, value);
@@ -37,10 +35,13 @@ export default class RouteCollection {
 			imax--;
 		}
 	}
-	get (path, method?){
+	get (path: string, method?: string): Route {
+		//@TODO Sometimes user can request route by full url when using hash router, should we do smth.here
+		//-path = this.normalizePath(path);
 		return route_match(path, this.routes, method);
 	}
-	getAll (path, method?) {
+	getAll (path: string, method?: string) {
+		//-path = this.normalizePath(path)
 		return route_matchAll(path, this.routes, method);
 	}
 	clear (){
@@ -54,4 +55,10 @@ export default class RouteCollection {
 		route_parseDefinition(route, definition);
 		return route_parsePath(route, path);
 	}
+	// private normalizePath (path: string) {
+	// 	if (this.type === 'hash' && path.indexOf('#') !== -1) {
+	// 		return path.substring(path.indexOf('#') + 1);
+	// 	}
+	// 	return path;
+	// }
 };

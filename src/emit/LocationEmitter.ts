@@ -14,7 +14,7 @@ export default class LocationEmitter {
 	public lifecycles: Lifecycle[] = []
 	public emitter: ILocationSource	
 
-	constructor (public collection: RouteCollection = new RouteCollection(), type: 'hash' | 'history' | 'memory' = null) {
+	constructor (public collection: RouteCollection = new RouteCollection(), public type: 'hash' | 'history' | 'memory' = null) {
 
 		if (type == null) {
 			if (HistoryEmitter.supports()) {

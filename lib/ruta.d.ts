@@ -19,7 +19,7 @@ declare module 'ruta/ruta' {
         off(regpath: any, mix: any): any;
         onLifecycle(def: string, cb: (event: ILifeCycleEvent) => void): any;
         offLifecycle(def: string, cb: any): any;
-        get(path: any): any;
+        get(path: string): any;
         navigate(mix: any, opts?: LocationNavigateOptions): any;
         back(opts?: LocationBackOptions): void;
         forward(): void;
@@ -161,6 +161,7 @@ declare module 'ruta/emit/LocationEmitter' {
     import Lifecycle from 'ruta/emit/Lifycycle';
     export default class LocationEmitter {
         collection: RouteCollection;
+        type: 'hash' | 'history' | 'memory';
         listeners: RouteCollection;
         lifecycles: Lifecycle[];
         emitter: ILocationSource;

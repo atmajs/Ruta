@@ -55,7 +55,10 @@ export default {
 		return this;
 	},
 
-	get (path){
+	get (path: string){
+		if (router != null && router.type === 'hash' && path.indexOf('#') !== -1) {
+			path = path.substr(path.indexOf('#') + 1);
+		}
 		return routes.get(path);
 	},
 	navigate (mix, opts?: LocationNavigateOptions){

@@ -10,7 +10,7 @@ export default class Route {
 
 	constructor (public definition: string, public value: string | any = null) {
 		var def = definition;
-		if (def.charCodeAt(0) === 36) {
+		if (def.charCodeAt(0) === 36 /*$ method prefix, e.g.: $get path*/) {
 			var i = def.indexOf(' ');
 			this.method = def.substring(1, i).toUpperCase();
 			def = def.substring(i + 1);

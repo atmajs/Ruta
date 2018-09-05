@@ -12,6 +12,7 @@ export default class HistoryEmitter implements ILocationSource {
 	constructor(public listener: LocationEmitter) {
 		this.initial = location.href;
 		window.onpopstate = this.onpopstate.bind(this);
+		Stack.push(Stack.create(this.current()));
 	}
 	static supports() {
 		if (typeof window === 'undefined')
@@ -51,16 +52,14 @@ export default class HistoryEmitter implements ILocationSource {
 			url = isQueryObject ? path_setQuery('', mix) : mix;
 		}
 
-		let state = Stack.create(this.current());
-		let direction = Direction.Forward;
-		
+		let nextState = Stack.create(url);		
 		let step = getStep(opts);		
 		if (step === 0) {
-			history.replaceState(state, null, url);
-			Stack.replace(state);
+			history.replaceState(nextState, null, url);
+			Stack.replace(nextState);
 		} else {
-			history.pushState(state, null, url);
-			Stack.push(state);
+			history.pushState(nextState, null, url);
+			Stack.push(nextState);
 		}
 
 		opts.step = 1;
@@ -83,17 +82,18 @@ export default class HistoryEmitter implements ILocationSource {
 			this.initial = null;
 			return;
 		}
+		let step = -1;
 		let id = e.state && e.state.id;
-		let isLast = Stack.isLast(id);
-		let direction = Direction.Back;
-		if (isLast) {
-			Stack.setForward(Stack.pop());			
-		} else if (Stack.isNext(id)) {
-			Stack.goForward();
-			direction = Direction.Forward;
+		if (id != null) {
+
+			step = Stack.goBackById(id) || Stack.goForwardById(id);			
+		} else {
+			Stack.goBackByCount(1);
 		}
+		
 		let opts = new LocationNavigateOptions();
-		opts.step = direction === Direction.Back ? -1 : 1;
+
+		opts.step = step;
 		this.changed(opts);
 	}
 	private changed(opts: LocationNavigateOptions) {

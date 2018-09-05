@@ -87,7 +87,7 @@ export default class LocationEmitter {
 		}
 	}
 	getBackStack () {
-		return Stack.backStates;
+		return Stack.getBackStack();
 	}
 	getForwardStack () {
 		return Stack.forwardStates;

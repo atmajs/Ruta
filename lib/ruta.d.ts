@@ -159,6 +159,7 @@ declare module 'ruta/emit/LocationEmitter' {
     import RouteCollection from 'ruta/route/RouteCollection';
     import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
     import Lifecycle from 'ruta/emit/Lifycycle';
+    import { State } from 'ruta/emit/Stack';
     import Route from 'ruta/route/Route';
     export default class LocationEmitter {
         collection: RouteCollection;
@@ -171,14 +172,38 @@ declare module 'ruta/emit/LocationEmitter' {
         navigate(mix?: any, opts?: LocationNavigateOptions): void;
         back(opts?: LocationBackOptions): void;
         forward(): void;
-        getBackStack(): any[];
-        getForwardStack(): any[];
+        getStack(): State[];
+        getBackStack(): State[];
+        getForwardStack(): State[];
         current(): Route;
         currentPath(): string;
         on(def: any, cb: any): void;
         off(def: any, cb: any): void;
         onLifecycle(def: any, cb: any): void;
         offLifecycle(def: any, cb: any): void;
+    }
+}
+
+declare module 'ruta/emit/Stack' {
+    export namespace Stack {
+        const stack: State[];
+        const forwardStates: State[];
+        function create(url: string): State;
+        function push(current: State): void;
+        function replace(current: State): void;
+        function goBackById(id: string): number;
+        function goBackByCount(count: number): void;
+        function goForwardById(id: string): number;
+        function goForwardByCount(count: number): void;
+        function hasBack(): boolean;
+        function hasForwad(): boolean;
+        function getCurrent(): State;
+        function getBackStack(): State[];
+    }
+    export interface State {
+        id: string;
+        url: string;
+        [key: string]: any;
     }
 }
 

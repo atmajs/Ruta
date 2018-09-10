@@ -1,4 +1,5 @@
 export namespace Stack {
+	let time = Date.now();
 	let uuid = 1;
 
 	export const stack: State[] = [];
@@ -6,7 +7,7 @@ export namespace Stack {
 	
 	export function create (url: string): State {
 		return { 
-            id: ++uuid,
+            id: `${time}_${++uuid}`,
             url
         };
 	}
@@ -55,13 +56,13 @@ export namespace Stack {
 	// export function pop (count = 1) {
 	// 	return stack.splice(stack.length - count);
 	// }
-	export function goBackById(id: number): number {
+	export function goBackById(id: string): number {
 		let i = stack.length;
 		while(--i > -1) {
 			if (stack[i].id !== id) {
 				continue;
 			}
-			let count = stack.length - i;
+			let count = stack.length - (i + 1);
 			goBackByCount(count);
 			return -count;
 		}
@@ -72,7 +73,7 @@ export namespace Stack {
 		
 		forwardStates.unshift(...arr);		
 	}
-	export function goForwardById(id: number): number {
+	export function goForwardById(id: string): number {
 		for (let i = 0; i < forwardStates.length; i++) {
 			if (forwardStates[i].id !== id) {
 				continue;
@@ -109,7 +110,7 @@ export namespace Stack {
 }
 
 export interface State { 
-	id: number
+	id: string
 	url: string
 	[key: string]: any 
 };

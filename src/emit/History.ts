@@ -1,9 +1,8 @@
-import { Direction } from './Lifycycle'
 import { obj_extend } from '../utils/obj'
 import { path_getQuery, path_setQuery } from '../utils/path'
 import { ILocationSource, LocationNavigateOptions } from './ILocationSource'
 import LocationEmitter from './LocationEmitter'
-import { getStep, setProperty } from '../utils/navigation'
+import { getStep } from '../utils/navigation'
 import { Stack } from './Stack'
 
 
@@ -12,7 +11,7 @@ export default class HistoryEmitter implements ILocationSource {
 	constructor(public listener: LocationEmitter) {
 		this.initial = location.href;
 		window.onpopstate = this.onpopstate.bind(this);
-		Stack.push(Stack.create(this.current()));
+		Stack.push(history.state || Stack.create(this.current()));
 	}
 	static supports() {
 		if (typeof window === 'undefined')
@@ -82,12 +81,21 @@ export default class HistoryEmitter implements ILocationSource {
 			this.initial = null;
 			return;
 		}
+		this.initial = null;
+
 		let step = -1;
 		let id = e.state && e.state.id;
 		if (id != null) {
-
-			step = Stack.goBackById(id) || Stack.goForwardById(id);			
-		} else {
+			step = Stack.goBackById(id);
+			if (step === 0) {
+				step = Stack.goForwardById(id);
+			}
+		} 
+		if (step === 0) {
+			if (e.state) {
+				Stack.replace(e.state);
+			}
+			step = -1;
 			Stack.goBackByCount(1);
 		}
 		

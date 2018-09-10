@@ -75,6 +75,9 @@ export default {
 	currentPath (){
 		return router_ensure().currentPath();
 	},
+	getStack () {
+		return router_ensure().getStack();
+	},
 	getBackStack () {
 		return router_ensure().getBackStack();
 	},

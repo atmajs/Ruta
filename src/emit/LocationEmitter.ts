@@ -6,7 +6,7 @@ import { log_error } from '../utils/log'
 import { obj_default } from '../utils/obj'
 import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from './ILocationSource'
 import Lifecycle from './Lifycycle'
-import { Stack } from './Stack';
+import { Stack, State } from './Stack';
 import Route from '../route/Route';
 
 export default class LocationEmitter {
@@ -85,6 +85,9 @@ export default class LocationEmitter {
 		if (Stack.hasForwad()) {
 			this.emitter.forward();
 		}
+	}
+	getStack () {
+		return Stack.stack;
 	}
 	getBackStack () {
 		return Stack.getBackStack();

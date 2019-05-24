@@ -14,15 +14,12 @@ export default class HistoryEmitter implements ILocationSource {
 		Stack.push(history.state || Stack.create(this.current()));
 	}
 	static supports() {
-		if (typeof window === 'undefined')
-			return false;
-
-		if (!(window.history && window.history.pushState))
-			return false;
-
-		if (window.location.href !== document.baseURI) {
-			return false;
-		}
+		if (typeof window === 'undefined') {
+            return false;
+        }
+		if (!(window.history && window.history.pushState)) {
+            return false;
+        }        
 		return true;
 	}	
 	navigate(mix: object | string, opts: LocationNavigateOptions = new LocationNavigateOptions) {

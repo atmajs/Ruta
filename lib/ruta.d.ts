@@ -7,7 +7,7 @@ declare module 'ruta' {
 
 declare module 'ruta/ruta' {
     import RouteCollection from 'ruta/route/RouteCollection';
-    import './mask/attr/anchor-dynamic';
+    
     import { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
     import { LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
     import Route from 'ruta/route/Route';

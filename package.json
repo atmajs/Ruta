@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.58",
+    "version": "0.2.59",
     "main": "./lib/ruta.js",
     "types": "./lib/ruta.d.ts",
     "repository": {
@@ -15,16 +15,17 @@
     "devDependencies": {
         "@types/sinon": "^2.3.3",
         "app-bundler": "0.0.76",
-        "atma": "^0.11.7",
+        "atma": "^0.12.18",
+        "atma-io": "^1.2.29",
         "atma-loader-ts": "^1.0.0",
         "dts-bundle": "^0.7.3"
     },
     "scripts": {
         "test": "atma test",
-        "build": "app-bundler && npm run build-dts",
+        "build": "app-bundler && npm run dts",
         "watch": "app-bundler --watch",
         "server": "atma server",
-        "build-dts": "tsc -p . & atma custom tools/build-dts",
+        "dts": "tsc -p . & atma run tools/build-dts",
         "release": "echo \"Run atma pub -m \"message\"\""
     },
     "license": "MIT",

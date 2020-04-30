@@ -20,7 +20,7 @@ export default class Lifecycle {
         };
         this.callback(this.state);
     }
-    changed (route, opts: LocationNavigateOptions) {
+    changed (route: Route, opts: LocationNavigateOptions) {
         this.state.direction = opts.step < 0
             ? Direction.Back
             : Direction.Forward

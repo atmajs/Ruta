@@ -1,5 +1,6 @@
 import Location from '../../src/emit/LocationEmitter'
 import Collection from '../../src/route/RouteCollection'
+import sinon = require('sinon');
 
 UTest({
     'should emit the lifecycle events' () {

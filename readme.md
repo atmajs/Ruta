@@ -71,13 +71,15 @@ ruta.Collection.prototype.get(path, ?method);
 
 ```
 
-```javascript
-var collection = new ruta.Collection();
+```ts
+import ruta from 'ruta'
+
+const collection = new ruta.Collection();
 
 collection
     .add('/user/:id', {foo: 'bar'});
 
-var route = collection.get('/user/20');
+const route = collection.get('/user/20');
 
 route.value === { foo: 'bar' };
 route.current.params.id === 20;

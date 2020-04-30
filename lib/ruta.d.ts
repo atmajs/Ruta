@@ -11,6 +11,8 @@ declare module 'ruta/ruta' {
     import { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
     import { LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
     import Route from 'ruta/route/Route';
+    import { IState } from 'ruta/emit/Stack';
+    export { IState as State };
     const _default: {
         Collection: typeof RouteCollection;
         setRouterType(type: any): any;
@@ -26,8 +28,9 @@ declare module 'ruta/ruta' {
         forward(): void;
         current(): Route;
         currentPath(): string;
-        getBackStack(): any[];
-        getForwardStack(): any[];
+        getStack(): IState[];
+        getBackStack(): IState[];
+        getForwardStack(): IState[];
         notifyCurrent(): any;
         parse: (definition: any, path: any) => {
             path: any;
@@ -87,7 +90,7 @@ declare module 'ruta/emit/Lifycycle' {
         route: Route;
         state: ILifeCycleEvent;
         constructor(location: LocationEmitter, definition: string, callback: (ILifeCycleEvent) => void);
-        changed(route: any, opts: LocationNavigateOptions): void;
+        changed(route: Route, opts: LocationNavigateOptions): void;
         dispose(): void;
     }
     export enum EventType {
@@ -155,11 +158,34 @@ declare module 'ruta/route/Route' {
     }
 }
 
+declare module 'ruta/emit/Stack' {
+    export namespace Stack {
+        const stack: IState[];
+        const forwardStates: IState[];
+        function create(url: string): IState;
+        function push(current: IState): void;
+        function replace(current: IState): void;
+        function goBackById(id: string): number;
+        function goBackByCount(count: number): void;
+        function goForwardById(id: string): number;
+        function goForwardByCount(count: number): void;
+        function hasBack(): boolean;
+        function hasForwad(): boolean;
+        function getCurrent(): IState;
+        function getBackStack(): IState[];
+    }
+    export interface IState {
+        id: string;
+        url: string;
+        [key: string]: any;
+    }
+}
+
 declare module 'ruta/emit/LocationEmitter' {
     import RouteCollection from 'ruta/route/RouteCollection';
     import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
-    import Lifecycle from 'ruta/emit/Lifycycle';
-    import { State } from 'ruta/emit/Stack';
+    import Lifecycle, { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
+    import { IState } from 'ruta/emit/Stack';
     import Route from 'ruta/route/Route';
     export default class LocationEmitter {
         collection: RouteCollection;
@@ -172,38 +198,15 @@ declare module 'ruta/emit/LocationEmitter' {
         navigate(mix?: any, opts?: LocationNavigateOptions): void;
         back(opts?: LocationBackOptions): void;
         forward(): void;
-        getStack(): State[];
-        getBackStack(): State[];
-        getForwardStack(): State[];
+        getStack(): IState[];
+        getBackStack(): IState[];
+        getForwardStack(): IState[];
         current(): Route;
         currentPath(): string;
-        on(def: any, cb: any): void;
-        off(def: any, cb: any): void;
-        onLifecycle(def: any, cb: any): void;
-        offLifecycle(def: any, cb: any): void;
-    }
-}
-
-declare module 'ruta/emit/Stack' {
-    export namespace Stack {
-        const stack: State[];
-        const forwardStates: State[];
-        function create(url: string): State;
-        function push(current: State): void;
-        function replace(current: State): void;
-        function goBackById(id: string): number;
-        function goBackByCount(count: number): void;
-        function goForwardById(id: string): number;
-        function goForwardByCount(count: number): void;
-        function hasBack(): boolean;
-        function hasForwad(): boolean;
-        function getCurrent(): State;
-        function getBackStack(): State[];
-    }
-    export interface State {
-        id: string;
-        url: string;
-        [key: string]: any;
+        on(def: any, cb: (route: Route, opts?: LocationNavigateOptions) => void): void;
+        off(def: any, cb?: Function): void;
+        onLifecycle(def: any, cb: (event: ILifeCycleEvent) => void): void;
+        offLifecycle(def: any, cb?: Function): void;
     }
 }
 

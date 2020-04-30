@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.59",
+    "version": "0.2.62",
     "main": "./lib/ruta.js",
     "types": "./lib/ruta.d.ts",
     "repository": {
@@ -25,7 +25,7 @@
         "build": "app-bundler && npm run dts",
         "watch": "app-bundler --watch",
         "server": "atma server",
-        "dts": "tsc -p . & atma run tools/build-dts",
+        "dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
         "release": "echo \"Run atma pub -m \"message\"\""
     },
     "license": "MIT",

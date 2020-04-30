@@ -3,11 +3,11 @@ import { ILocationSource, LocationNavigateOptions } from './ILocationSource'
 import LocationEmitter from './LocationEmitter'
 
 export default class MemoryEmitter implements ILocationSource {
-    stack: string[] = [ '/' ]
-    forwardStack: string [] = []
+    stack: string[] = ['/']
+    forwardStack: string[] = []
     constructor(public listener: LocationEmitter) {
-		
-	}
+
+    }
     navigate(path: string, opts?: LocationNavigateOptions) {
         let step = getStep(opts);
         if (step < 1) {
@@ -22,13 +22,13 @@ export default class MemoryEmitter implements ILocationSource {
     current(): string {
         return this.stack[this.stack.length - 1]
     }
-    back () {
+    back() {
         this.forwardStack.unshift(this.stack.pop());
         let opts = new LocationNavigateOptions();
-		opts.step = -1;
+        opts.step = -1;
         this.listener.onChanged(this.current(), opts);
     }
-    forward () {
+    forward() {
         this.stack.push(this.forwardStack.shift());
         let opts = new LocationNavigateOptions();
         opts.step = 1;

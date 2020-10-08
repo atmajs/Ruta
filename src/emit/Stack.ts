@@ -18,44 +18,6 @@ export namespace Stack {
     export function replace(current: IState) {
         stack[Math.max(0, stack.length - 1)] = current;
     }
-    // export function last () {
-    // 	return stack.length === 1 
-    // 		? null 
-    // 		: stack[stack.length - 2]
-    // 		;
-    // }
-    // export function next () {
-    // 	return forwardStates[0];
-    // }
-    // export function isLast(id: number) {
-    // 	let x = last();
-    // 	return id != null && x != null && x.id === id;
-    // }
-    // export function findLastIndex(id: number) {
-    // 	let i = backStates.length;
-    // 	while(--i > -1) {
-    // 		if (backStates[i].id == id) {
-    // 			return i;
-    // 		}
-    // 	}
-    // 	return -1;
-    // }
-    // export function findNextIndex(id: number) {
-    // 	let i = -1;
-    // 	while(++i < forwardStates.length) {
-    // 		if (forwardStates[i].id == id) {
-    // 			return i;
-    // 		}
-    // 	}
-    // 	return -1;
-    // }
-    // export function isNext(id: number) {
-    // 	let x = next();
-    // 	return id != null && x != null && x.id === id;
-    // }
-    // export function pop (count = 1) {
-    // 	return stack.splice(stack.length - count);
-    // }
     export function goBackById(id: string): number {
         let i = stack.length;
         while (--i > -1) {
@@ -106,6 +68,14 @@ export namespace Stack {
     }
     export function getBackStack() {
         return stack.length === 0 ? [] : stack.slice(0, stack.length - 1);
+    }
+    export function findInBack (url: string): IState {
+        for (let i = stack.length - 1; i > -1; i--) {
+            if (stack[i].url === url) {
+                return stack[i];
+            }
+        }
+        return null;
     }
 }
 

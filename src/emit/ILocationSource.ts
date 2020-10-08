@@ -3,8 +3,8 @@ import LocationEmitter from './LocationEmitter'
 
 export class LocationNavigateOptions {
     /**
-     * History step. 1: Forward, 0: Replace Current, -1-(-n): Back 
-     * @default: 1 
+     * History step. 1: Forward, 0: Replace Current, -1-(-n): Back
+     * @default: 1
      * */
     step?: number = 1
     /**
@@ -17,7 +17,10 @@ export class LocationNavigateOptions {
     /** When false listeners are not notified */
     silent?: boolean = false
     /** Additional arguments which will be attached to the routes model params */
-    params?: any = null    
+    params?: any = null
+
+    /** If true, navigate will perform back action to the route when in history */
+    preferHistory?: boolean = false
 }
 
 export class LocationBackOptions {

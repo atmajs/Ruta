@@ -17,12 +17,11 @@ export default class LocationEmitter {
 
     constructor(public collection: RouteCollection = new RouteCollection(), public type: 'hash' | 'history' | 'memory' = null) {
 
-        if (type == null) {
-            if (HistoryEmitter.supports()) {
-                type = 'history';
-            } else if (HashEmitter.supports()) {
-                type = 'hash';
-            }
+        if (type == null && HistoryEmitter.supports()) {
+            type = 'history';
+        }
+        if (type == null && HashEmitter.supports()) {
+            type = 'hash';
         }
         switch (type) {
             case 'hash':
@@ -40,8 +39,9 @@ export default class LocationEmitter {
         }
     }
 
+    /** Is also called by the emitter */
     onChanged(path, opts: LocationNavigateOptions = null) {
-        if (opts && opts.silent === true) {
+        if (opts?.silent === true) {
             return;
         }
 
@@ -58,9 +58,9 @@ export default class LocationEmitter {
     }
     private doAction(route, opts: LocationNavigateOptions = null) {
         if (typeof route.value === 'function') {
-            var current = route.current;
-            var params = current && current.params;
-            if (opts && opts.params != null) {
+            let current = route.current;
+            let params = current?.params;
+            if (opts?.params != null) {
                 current.params = params = obj_default(params, opts.params);
             }
             route.value(route, params);

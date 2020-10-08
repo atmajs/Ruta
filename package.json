@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.62",
+    "version": "0.2.63",
     "main": "./lib/ruta.js",
     "types": "./lib/ruta.d.ts",
     "repository": {
@@ -13,11 +13,12 @@
         "url": "git://github.com/atmajs/Ruta.git"
     },
     "devDependencies": {
+        "@types/jquery": "^3.2.12",
         "@types/sinon": "^2.3.3",
-        "app-bundler": "0.0.76",
+        "app-bundler": "0.0.89",
         "atma": "^0.12.18",
         "atma-io": "^1.2.29",
-        "atma-loader-ts": "^1.0.0",
+        "atma-loader-ts": "^1.1.12",
         "dts-bundle": "^0.7.3"
     },
     "scripts": {
@@ -66,13 +67,15 @@
                 ],
                 "typescript": {
                     "compilerOptions": {
-                        "module": "amd"
+                        "#if (TEST)": {
+                            "module": "AMD"
+                        },
+                        "#if (!TEST)": {
+                            "module": "CommonJS"
+                        }
                     }
                 }
             }
         }
-    },
-    "dependencies": {
-        "@types/jquery": "^3.2.12"
     }
 }

@@ -6,7 +6,10 @@ declare module 'ruta' {
 }
 
 declare module 'ruta/ruta' {
-    import RouteCollection from 'ruta/route/RouteCollection';
+    import { query_deserialize } from 'ruta/utils/query'; 
+     import { query_serialize } from 'ruta/utils/query'; 
+     import { path_fromCLI } from 'ruta/utils/path'; 
+     import RouteCollection from 'ruta/route/RouteCollection';
     
     import { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
     import { LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
@@ -14,50 +17,63 @@ declare module 'ruta/ruta' {
     import { IState } from 'ruta/emit/Stack';
     export { IState as State };
     const _default: {
-        Collection: typeof RouteCollection;
-        setRouterType(type: any): any;
-        setStrictBehaviour(isStrict: boolean): any;
-        add(regpath: any, mix: any): any;
-        on(regpath: any, mix: any): any;
-        off(regpath: any, mix: any): any;
-        onLifecycle(def: string, cb: (event: ILifeCycleEvent) => void): any;
-        offLifecycle(def: string, cb: any): any;
-        get(path: string): Route;
-        navigate(mix: any, opts?: LocationNavigateOptions): any;
-        back(opts?: LocationBackOptions): void;
-        forward(): void;
-        current(): Route;
-        currentPath(): string;
-        getStack(): IState[];
-        getBackStack(): IState[];
-        getForwardStack(): IState[];
-        notifyCurrent(): any;
-        parse: (definition: any, path: any) => {
-            path: any;
-            params: {};
-        };
-        $utils: {
-            pathFromCLI: (commands: any) => string;
-            query: {
-                serialize: (params: any, delimiter: any) => string;
-                deserialize: (query: any, delimiter: any) => {};
-                get: (path_: any) => {
-                    [key: string]: string;
-                };
+            Collection: typeof RouteCollection;
+            setRouterType(type: any): any;
+            setStrictBehaviour(isStrict: boolean): any;
+            add(regpath: any, mix: any): any;
+            on(regpath: any, mix: any): any;
+            off(regpath: any, mix: any): any;
+            onLifecycle(def: string, cb: (event: ILifeCycleEvent) => void): any;
+            offLifecycle(def: string, cb: any): any;
+            get(path: string): Route;
+            navigate(mix: any, opts?: LocationNavigateOptions): any;
+            back(opts?: LocationBackOptions): void;
+            forward(): void;
+            current(): Route;
+            currentPath(): string;
+            getStack(): IState[];
+            getBackStack(): IState[];
+            getForwardStack(): IState[];
+            notifyCurrent(): any;
+            parse: typeof RouteCollection.parse;
+            $utils: {
+                    pathFromCLI: typeof path_fromCLI;
+                    query: {
+                            serialize: typeof query_serialize;
+                            deserialize: typeof query_deserialize;
+                            get: (path_: any) => {
+                                    [key: string]: string;
+                            };
+                    };
             };
-        };
-        _: {
-            pathFromCLI: (commands: any) => string;
-            query: {
-                serialize: (params: any, delimiter: any) => string;
-                deserialize: (query: any, delimiter: any) => {};
-                get: (path_: any) => {
-                    [key: string]: string;
-                };
+            _: {
+                    pathFromCLI: typeof path_fromCLI;
+                    query: {
+                            serialize: typeof query_serialize;
+                            deserialize: typeof query_deserialize;
+                            get: (path_: any) => {
+                                    [key: string]: string;
+                            };
+                    };
             };
-        };
     };
     export default _default;
+}
+
+declare module 'ruta/utils/query' {
+    export function query_deserialize(query: string, delimiter?: string): {};
+    export function query_serialize(params: any, delimiter: any): string;
+}
+
+declare module 'ruta/utils/path' {
+    export function path_normalize(str: string): string;
+    export function path_split(path: string): string[];
+    export function path_join(pathParts: string[]): string;
+    export function path_fromCLI(commands: any): string;
+    export function path_getQuery(path: string): {
+        [key: string]: string;
+    };
+    export function path_setQuery(path: string, mix: string | object): string;
 }
 
 declare module 'ruta/route/RouteCollection' {
@@ -86,10 +102,10 @@ declare module 'ruta/emit/Lifycycle' {
     export default class Lifecycle {
         location: LocationEmitter;
         definition: string;
-        callback: (ILifeCycleEvent) => void;
+        callback: (ILifeCycleEvent: any) => void;
         route: Route;
         state: ILifeCycleEvent;
-        constructor(location: LocationEmitter, definition: string, callback: (ILifeCycleEvent) => void);
+        constructor(location: LocationEmitter, definition: string, callback: (ILifeCycleEvent: any) => void);
         changed(route: Route, opts: LocationNavigateOptions): void;
         dispose(): void;
     }
@@ -97,11 +113,11 @@ declare module 'ruta/emit/Lifycycle' {
         Initial = "initial",
         Enter = "enter",
         Leave = "leave",
-        Change = "change",
+        Change = "change"
     }
     export enum Direction {
         Forward = "forward",
-        Back = "back",
+        Back = "back"
     }
     export interface ILifeCycleEvent {
         type: EventType;
@@ -128,6 +144,8 @@ declare module 'ruta/emit/ILocationSource' {
             silent?: boolean;
             /** Additional arguments which will be attached to the routes model params */
             params?: any;
+            /** If true, navigate will perform back action to the route when in history */
+            preferHistory?: boolean;
     }
     export class LocationBackOptions {
             default?: {
@@ -173,6 +191,7 @@ declare module 'ruta/emit/Stack' {
         function hasForwad(): boolean;
         function getCurrent(): IState;
         function getBackStack(): IState[];
+        function findInBack(url: string): IState;
     }
     export interface IState {
         id: string;
@@ -194,6 +213,7 @@ declare module 'ruta/emit/LocationEmitter' {
         lifecycles: Lifecycle[];
         emitter: ILocationSource;
         constructor(collection?: RouteCollection, type?: 'hash' | 'history' | 'memory');
+        /** Is also called by the emitter */
         onChanged(path: any, opts?: LocationNavigateOptions): void;
         navigate(mix?: any, opts?: LocationNavigateOptions): void;
         back(opts?: LocationBackOptions): void;

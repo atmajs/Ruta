@@ -28,7 +28,7 @@ export default class HistoryEmitter implements ILocationSource {
             return;
         }
         let isQueryObject = typeof mix === 'object';
-        let url = null;
+        let url:string = null;
         if (opts.extend === true) {
             let query: any = isQueryObject ? mix : path_getQuery(mix as string);
             let current = path_getQuery(location.search);
@@ -41,11 +41,11 @@ export default class HistoryEmitter implements ILocationSource {
                     }
                 }
                 query = obj_extend(current, query);
-                url = path_setQuery(url || '', query);
+                url = path_setQuery(location.pathname, query);
             }
         }
         if (url == null) {
-            url = isQueryObject ? path_setQuery('', mix) : mix;
+            url = isQueryObject ? path_setQuery(location.pathname, mix) : <string> mix;
         }
 
         let nextState = Stack.create(url);

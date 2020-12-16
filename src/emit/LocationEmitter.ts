@@ -7,7 +7,7 @@ import { obj_default } from '../utils/obj'
 import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from './ILocationSource'
 import Lifecycle, { ILifeCycleEvent } from './Lifycycle'
 import { Stack, IState } from './Stack';
-import Route from '../route/Route';
+import { Route }from '../route/Route';
 
 export default class LocationEmitter {
 

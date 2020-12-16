@@ -1,4 +1,4 @@
-import Route from '../../src/route/Route'
+import { Route } from '../../src/route/Route'
 import LocationEmitter from '../../src/emit/LocationEmitter'
 import RouteCollection from '../../src/route/RouteCollection'
 import sinon = require('sinon')

@@ -5,7 +5,7 @@ import options from './options'
 import './mask/attr/anchor-dynamic'
 import { ILifeCycleEvent } from './emit/Lifycycle';
 import { LocationNavigateOptions, LocationBackOptions } from './emit/ILocationSource';
-import Route from './route/Route';
+import { Route }from './route/Route';
 import { IState } from './emit/Stack'
 
 let routes = new RouteCollection();
@@ -23,8 +23,9 @@ export { IState as State };
 export default {
 
     Collection: RouteCollection,
+    Route: Route,
 
-    setRouterType(type) {
+    setRouterType(type: 'hash' | 'history' | 'memory') {
         if (router == null) {
             router = new Location(routes, type);
         }

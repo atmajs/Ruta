@@ -16,7 +16,7 @@ module.exports = {
     suites: {
         dom: {
             env: '/lib/ruta.js',
-            tests: ['/test/dom/**.test'],
+            tests: ['./test/dom/**.spec.ts'],
             $config: {
                 includejs: {
                     extentionDefault: { js: 'ts' },
@@ -26,7 +26,7 @@ module.exports = {
         },
         node: {
             env: '/lib/ruta.js',
-            tests: ['/test/node/**.test']
+            tests: ['./test/node/**.spec.ts']
         }
     }
 };

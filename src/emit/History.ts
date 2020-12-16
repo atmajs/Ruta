@@ -11,7 +11,7 @@ export default class HistoryEmitter implements ILocationSource {
     constructor(public listener: LocationEmitter) {
         this.initial = location.href;
         window.onpopstate = this.onpopstate.bind(this);
-        Stack.push(history.state || Stack.create(this.current()));
+        Stack.push(Stack.create(this.current()));
     }
     static supports() {
         if (typeof window === 'undefined') {

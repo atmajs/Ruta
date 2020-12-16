@@ -1,20 +1,36 @@
 import {route_parseDefinition} from './route_utils'
 import options from '../options'
 
-export default class Route {
-	method: string
-	strict: boolean = options.isStrict
-	current: any
-	query: {[key: string]: any}
-	path: string
+export interface IRoutePathSegment {
+    matcher: { test (str: string): boolean }
+    alias?: string
+    optional?: boolean
+}
+export class Route {
+    method: string
+    strict: boolean = options.isStrict
+    current: {
+        value?: any
+        path: string
+        params: { [key: string]: any }
+    }
+    query: { [key: string]: string | RegExp }
 
-	constructor (public definition: string, public value: string | any = null) {
-		var def = definition;
-		if (def.charCodeAt(0) === 36 /*$ method prefix, e.g.: $get path*/) {
-			var i = def.indexOf(' ');
-			this.method = def.substring(1, i).toUpperCase();
-			def = def.substring(i + 1);
-		}		
-		route_parseDefinition(this, def);
-	}
+    path: IRoutePathSegment[]
+
+    match?: RegExp
+
+    constructor (public definition?: string, public value: string | any = null) {
+        if (definition == null) {
+            return;
+        }
+
+        let def = definition;
+        if (def.charCodeAt(0) === 36 /*$ method prefix, e.g.: $get path*/) {
+            let i = def.indexOf(' ');
+            this.method = def.substring(1, i).toUpperCase();
+            def = def.substring(i + 1);
+        }
+        route_parseDefinition(this, def);
+    }
 };

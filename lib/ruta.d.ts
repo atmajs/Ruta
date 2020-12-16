@@ -13,12 +13,13 @@ declare module 'ruta/ruta' {
     
     import { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
     import { LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
-    import Route from 'ruta/route/Route';
+    import { Route } from 'ruta/route/Route';
     import { IState } from 'ruta/emit/Stack';
     export { IState as State };
     const _default: {
             Collection: typeof RouteCollection;
-            setRouterType(type: any): any;
+            Route: typeof Route;
+            setRouterType(type: 'hash' | 'history' | 'memory'): any;
             setStrictBehaviour(isStrict: boolean): any;
             add(regpath: any, mix: any): any;
             on(regpath: any, mix: any): any;
@@ -77,7 +78,7 @@ declare module 'ruta/utils/path' {
 }
 
 declare module 'ruta/route/RouteCollection' {
-    import Route from 'ruta/route/Route';
+    import { Route } from 'ruta/route/Route';
     export default class RouteCollection {
         routes: Route[];
         /** alias for `push` */
@@ -88,8 +89,8 @@ declare module 'ruta/route/RouteCollection' {
         get(path: string, method?: string): Route;
         getAll(path: string, method?: string): any[];
         clear(): this;
-        static parse(definition: any, path: any): {
-            path: any;
+        static parse(definition: string, path: string): {
+            path: string;
             params: {};
         };
     }
@@ -97,7 +98,7 @@ declare module 'ruta/route/RouteCollection' {
 
 declare module 'ruta/emit/Lifycycle' {
     import LocationEmitter from 'ruta/emit/LocationEmitter';
-    import Route from 'ruta/route/Route';
+    import { Route } from 'ruta/route/Route';
     import { LocationNavigateOptions } from 'ruta/emit/ILocationSource';
     export default class Lifecycle {
         location: LocationEmitter;
@@ -162,17 +163,31 @@ declare module 'ruta/emit/ILocationSource' {
 }
 
 declare module 'ruta/route/Route' {
-    export default class Route {
-        definition: string;
+    export interface IRoutePathSegment {
+        matcher: {
+            test(str: string): boolean;
+        };
+        alias?: string;
+        optional?: boolean;
+    }
+    export class Route {
+        definition?: string;
         value: string | any;
         method: string;
         strict: boolean;
-        current: any;
-        query: {
-            [key: string]: any;
+        current: {
+            value?: any;
+            path: string;
+            params: {
+                [key: string]: any;
+            };
         };
-        path: string;
-        constructor(definition: string, value?: string | any);
+        query: {
+            [key: string]: string | RegExp;
+        };
+        path: IRoutePathSegment[];
+        match?: RegExp;
+        constructor(definition?: string, value?: string | any);
     }
 }
 
@@ -205,7 +220,7 @@ declare module 'ruta/emit/LocationEmitter' {
     import { ILocationSource, LocationNavigateOptions, LocationBackOptions } from 'ruta/emit/ILocationSource';
     import Lifecycle, { ILifeCycleEvent } from 'ruta/emit/Lifycycle';
     import { IState } from 'ruta/emit/Stack';
-    import Route from 'ruta/route/Route';
+    import { Route } from 'ruta/route/Route';
     export default class LocationEmitter {
         collection: RouteCollection;
         type: 'hash' | 'history' | 'memory';

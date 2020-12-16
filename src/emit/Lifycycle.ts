@@ -1,5 +1,5 @@
 import LocationEmitter from './LocationEmitter'
-import Route from '../route/Route'
+import { Route }from '../route/Route'
 import { route_match } from '../route/match'
 import { LocationNavigateOptions } from './ILocationSource';
 
@@ -12,7 +12,7 @@ export default class Lifecycle {
         this.route = new Route(definition);
 
         let current = route_match(this.location.currentPath(), [ this.route ]);
-        
+
         this.state = {
             type: EventType.Initial,
             direction: Direction.Forward,
@@ -33,16 +33,16 @@ export default class Lifecycle {
                 return;
             }
             state.type  = EventType.Leave;
-            state.route = null;           
+            state.route = null;
             this.callback(state);
             return;
-        }        
+        }
         if (this.state.route == null) {
             state.type  = EventType.Enter;
             state.route = current;
             this.callback(state);
             return;
-        }        
+        }
         state.type  = EventType.Change;
         state.route = current;
         this.callback(state);

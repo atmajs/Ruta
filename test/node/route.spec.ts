@@ -1,4 +1,4 @@
-import Route from '../../src/route/Route'
+import { Route } from '../../src/route/Route'
 import { route_isMatch } from '../../src/route/match'
 import { route_parsePath } from '../../src/route/route_utils'
 import { path_fromCLI } from '../../src/utils/path'
@@ -45,7 +45,7 @@ function check(definition, data) {
 
 UTest({
 
-    'simple': function () {
+    'simple' () {
         check('/user/:id', {
             match: [
                 ['/user/20', { id: 20 }],
@@ -87,7 +87,7 @@ UTest({
             ]
         })
     },
-    'any': function () {
+    'any' () {
         check('/*/foo', {
             match: [
                 ['/service/foo', {}],
@@ -108,7 +108,7 @@ UTest({
             ]
         });
     },
-    'conditional': function () {
+    'conditional' () {
         check('/service/:action(save|remove)', {
             match: [
                 ['/service/save', { action: 'save' }],
@@ -121,7 +121,7 @@ UTest({
             ]
         });
     },
-    'strict': function () {
+    'strict' () {
         check('!/user/:id', {
             match: [
                 '/user/20',
@@ -138,7 +138,7 @@ UTest({
         });
     },
 
-    'method parser': function () {
+    'method parser' () {
 
         check('$post !/:action(save)', {
             match: [
@@ -150,7 +150,7 @@ UTest({
 
     },
 
-    'regex': function () {
+    'regex' () {
         check('^/:alias(^num[0-9]{1,2}$)', {
             match: [
                 ['/num10', { alias: 'num10' }],
@@ -173,7 +173,7 @@ UTest({
         });
     },
 
-    'query': function () {
+    'query' () {
 
         check('?debug', {
             match: [
@@ -232,7 +232,7 @@ UTest({
         });
     },
 
-    'cli-parser': function () {
+    'cli-parser' () {
 
         [
             ['custom test --debug', '/custom/test?debug'],

@@ -9,7 +9,6 @@ UTest({
 
         ruta.navigate('/user/bob');
         let stack = ruta.getBackStack();
-        console.log('STACK', stack);
         is_(stack, Array);
         eq_(stack.length, 1);
         has_(stack[0].url, '/utest/');

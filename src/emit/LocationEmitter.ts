@@ -56,7 +56,7 @@ export default class LocationEmitter {
             this.doAction(routes[i], opts);
         }
     }
-    private doAction(route, opts: LocationNavigateOptions = null) {
+    private doAction(route: Route, opts: LocationNavigateOptions = null) {
         if (typeof route.value === 'function') {
             let current = route.current;
             let params = current?.params;

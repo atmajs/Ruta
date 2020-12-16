@@ -6,7 +6,7 @@ export interface IRoutePathSegment {
     alias?: string
     optional?: boolean
 }
-export class Route {
+export class Route<T = any> {
     method: string
     strict: boolean = options.isStrict
     current: {
@@ -20,7 +20,7 @@ export class Route {
 
     match?: RegExp
 
-    constructor (public definition?: string, public value: string | any = null) {
+    constructor (public definition?: string, public value: T = null) {
         if (definition == null) {
             return;
         }

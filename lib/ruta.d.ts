@@ -30,7 +30,7 @@ declare module 'ruta/ruta' {
             navigate(mix: any, opts?: LocationNavigateOptions): any;
             back(opts?: LocationBackOptions): void;
             forward(): void;
-            current(): Route<any>;
+            current(): Route;
             currentPath(): string;
             getStack(): IState[];
             getBackStack(): IState[];
@@ -170,9 +170,9 @@ declare module 'ruta/route/Route' {
         alias?: string;
         optional?: boolean;
     }
-    export class Route<T = any> {
+    export class Route {
         definition?: string;
-        value: T;
+        value: any;
         method: string;
         strict: boolean;
         current: {
@@ -187,7 +187,7 @@ declare module 'ruta/route/Route' {
         };
         path: IRoutePathSegment[];
         match?: RegExp;
-        constructor(definition?: string, value?: T);
+        constructor(definition?: string, value?: any);
     }
 }
 

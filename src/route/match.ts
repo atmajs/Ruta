@@ -134,7 +134,8 @@ export function route_isMatch(parts: string | UrlSegments, route: Route, current
     }
 
     if (i < routeLength) {
-        return routePath[i].optional === true;
+        let x = routePath[i];
+        return typeof x !== 'string' && x.optional === true;
     }
 
 

@@ -5,6 +5,7 @@ export interface IRoutePathSegment {
     matcher: { test (str: string): boolean }
     alias?: string
     optional?: boolean
+    isLookAhead?: boolean
 }
 export class Route {
     method: string
@@ -16,7 +17,7 @@ export class Route {
     }
     query: { [key: string]: string | RegExp }
 
-    path: IRoutePathSegment[]
+    path: (string | IRoutePathSegment)[]
 
     match?: RegExp
 

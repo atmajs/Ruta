@@ -33,55 +33,65 @@ export function route_parseDefinition(route: Route, definition: string) {
             route.match = new RegExp(definition.substring(start, end));
             return;
     }
-    let parts = definition.split('/'),
-        search,
-        searchIndex,
-        i = 0,
-        imax = parts.length,
-        x,
-        c0,
-        index,
-        c1;
+    let parts = definition.split('/');
+    let search: string;
+    let c0: number;
+    let c1: number;
 
 
+    let imax = parts.length;
     let last = parts[imax - 1];
-    searchIndex = last.indexOf('?');
+    let searchIndex = last.indexOf('?');
     if (searchIndex > (imax === 1 ? -1 : 0)) {
         // `?` cannt be at `0` position, when has url definition contains `path`
-        search = last.substring(searchIndex + 1);
-        parts[imax - 1] = last.substring(0, searchIndex);
+        if (searchIndex === 0 || last[searchIndex - 1] !== '(') {
+            search = last.substring(searchIndex + 1);
+            parts[imax - 1] = last.substring(0, searchIndex);
+        }
     }
 
-    let matcher = '',
-        alias = null,
-        strictCount = 0;
 
-    let gettingMatcher = true,
-        isOptional,
-        isAlias,
-        rgx;
+    let gettingMatcher = true;
+    let rgx;
 
-    let array = route.path = [] as IRoutePathSegment[];
-
+    let array = route.path = [] as (IRoutePathSegment | string)[];
+    let i = 0;
     for (; i < imax; i++) {
-        x = parts[i];
-
-        if (x === '')
+        let x = parts[i];
+        if (x === '') {
             continue;
-
+        }
 
         c0 = x.charCodeAt(0);
         c1 = x.charCodeAt(1);
 
-        isOptional = c0 === 63; /* ? */
-        isAlias = (isOptional ? c1 : c0) === 58; /* : */
-        index = 0;
-
-        if (isOptional)
+        let index = 0;
+        let isOptional = c0 === 63; /* ? */
+        if (isOptional) {
             index++;
+            c0 = x.charCodeAt(index);
+        }
 
-        if (isAlias)
+        let isRgx = c0 === 40; /* ( */
+        if (isRgx) {
+            let end = x.lastIndexOf(')');
+            let pattern = x.substring(index + 1, end);
+            let isLookAhead = false;
+            if (pattern[0] === '?' && pattern[1] === '=') {
+                isLookAhead = true;
+                pattern = pattern.substring(2);
+            }
+            array.push({
+                matcher: new RegExp(`^(${pattern})$`),
+                optional: isOptional,
+                isLookAhead: isLookAhead,
+            });
+            continue;
+        }
+        let isAlias = c0 === 58; /* : */
+        if (isAlias) {
             index++;
+        }
 
 
         if (index !== 0)

@@ -171,6 +171,30 @@ UTest({
                 '/aless'
             ]
         });
+
+        check('^/api/cms/(foo|bar)', {
+            match: [
+                ['/api/cms/foo'],
+                ['/api/cms/bar']
+            ],
+            fail: [
+                '/api/cms/lorem',
+                '/api/cms/xfoo',
+                '/api/cms/foox',
+            ]
+        });
+
+        check('^/lorem/(?=(foo|bar))', {
+            match: [
+                ['/lorem/foo'],
+                ['/lorem/bar']
+            ],
+            fail: [
+                '/lorem/lorem',
+                '/lorem/xfoo',
+                '/lorem/foox',
+            ]
+        });
     },
 
     'query' () {

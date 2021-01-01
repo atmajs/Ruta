@@ -169,6 +169,7 @@ declare module 'ruta/route/Route' {
         };
         alias?: string;
         optional?: boolean;
+        isLookAhead?: boolean;
     }
     export class Route {
         definition?: string;
@@ -185,7 +186,7 @@ declare module 'ruta/route/Route' {
         query: {
             [key: string]: string | RegExp;
         };
-        path: IRoutePathSegment[];
+        path: (string | IRoutePathSegment)[];
         match?: RegExp;
         constructor(definition?: string, value?: any);
     }

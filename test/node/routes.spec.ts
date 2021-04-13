@@ -1,9 +1,9 @@
-import Collection from '../../src/route/RouteCollection'
+import { RouteCollection } from '../../src/route/RouteCollection'
 
-const routes = new Collection();
+const routes = new RouteCollection();
 
 UTest({
-    'add+get': function () {
+    'add+get'() {
 
         routes
             .clear()

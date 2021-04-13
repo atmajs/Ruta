@@ -2,7 +2,7 @@ import { Route }from './Route'
 import {route_match, route_matchAll } from './match'
 import { route_parseDefinition, route_parsePath } from './route_utils'
 
-export default class RouteCollection {
+export class RouteCollection {
     //type: 'url' | 'hash' = 'url'
     routes: Route[] = []
     /** alias for `push` */

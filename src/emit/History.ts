@@ -1,7 +1,7 @@
 import { obj_extend } from '../utils/obj'
 import { path_getQuery, path_setQuery } from '../utils/path'
 import { ILocationSource, LocationNavigateOptions } from './ILocationSource'
-import LocationEmitter from './LocationEmitter'
+import { LocationEmitter } from './LocationEmitter'
 import { getStep } from '../utils/navigation'
 import { Stack } from './Stack'
 

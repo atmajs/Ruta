@@ -1,5 +1,3 @@
-import LocationEmitter from './LocationEmitter'
-
 
 export class LocationNavigateOptions {
     /**

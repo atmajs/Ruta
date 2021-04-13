@@ -1,5 +1,5 @@
-import RouteCollection from './route/RouteCollection'
-import Location from './emit/LocationEmitter'
+import { RouteCollection } from './route/RouteCollection'
+import { LocationEmitter } from'./emit/LocationEmitter'
 import ApiUtils from './api/utils'
 import options from './options'
 import './mask/attr/anchor-dynamic'
@@ -9,25 +9,25 @@ import { Route }from './route/Route';
 import { IState } from './emit/Stack'
 
 let routes = new RouteCollection();
-let router: Location;
+let router: LocationEmitter;
 
 function router_ensure() {
     if (router == null) {
-        router = new Location(routes);
+        router = new LocationEmitter(routes);
     }
     return router;
 }
 
 export { IState as State };
 
-export default {
+export const Ruta = {
 
     Collection: RouteCollection,
     Route: Route,
 
     setRouterType(type: 'hash' | 'history' | 'memory') {
         if (router == null) {
-            router = new Location(routes, type);
+            router = new LocationEmitter(routes, type);
         }
         return this;
     },

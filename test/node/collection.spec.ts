@@ -1,9 +1,9 @@
-import Collection from '../../src/route/RouteCollection'
+import { RouteCollection } from '../../src/route/RouteCollection'
 
 UTest({
     'simple' () {
 
-        const routes = new Collection();
+        const routes = new RouteCollection();
 
         routes.add('/user/:id', { foo: true });
 
@@ -20,7 +20,7 @@ UTest({
 
     'support array' () {
 
-        const routes = new Collection();
+        const routes = new RouteCollection();
 
         routes.add('/user/:id', { foo: true });
 

@@ -1,4 +1,4 @@
-import RouteCollection from '../route/RouteCollection'
+import{ RouteCollection } from '../route/RouteCollection'
 import HashEmitter from './Hash'
 import HistoryEmitter from './History'
 import MemoryEmitter from './Memory'
@@ -9,7 +9,7 @@ import Lifecycle, { ILifeCycleEvent } from './Lifycycle'
 import { Stack, IState } from './Stack';
 import { Route }from '../route/Route';
 
-export default class LocationEmitter {
+export class LocationEmitter {
 
     public listeners = new RouteCollection()
     public lifecycles: Lifecycle[] = []

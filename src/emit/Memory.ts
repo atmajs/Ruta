@@ -1,6 +1,6 @@
 import { getStep } from '../utils/navigation';
 import { ILocationSource, LocationNavigateOptions } from './ILocationSource'
-import LocationEmitter from './LocationEmitter'
+import { LocationEmitter } from './LocationEmitter'
 
 export default class MemoryEmitter implements ILocationSource {
     stack: string[] = ['/']

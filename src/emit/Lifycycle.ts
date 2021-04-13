@@ -1,4 +1,4 @@
-import LocationEmitter from './LocationEmitter'
+import { LocationEmitter } from './LocationEmitter'
 import { Route }from '../route/Route'
 import { route_match } from '../route/match'
 import { LocationNavigateOptions } from './ILocationSource';

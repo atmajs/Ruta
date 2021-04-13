@@ -1,2 +1,2 @@
-import Ruta from './ruta'
+import { Ruta } from './ruta'
 export = Ruta

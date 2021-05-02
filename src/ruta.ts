@@ -95,9 +95,9 @@ export const Ruta = {
 
     parse: RouteCollection.parse,
 
-	/*
-	 * @deprecated - use `_` instead
-	 */
+    /*
+     * @deprecated - use `_` instead
+     */
     $utils: ApiUtils,
     _: ApiUtils,
 };

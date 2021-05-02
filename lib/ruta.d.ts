@@ -42,7 +42,7 @@ declare module 'ruta/ruta' {
                     query: {
                             serialize: typeof query_serialize;
                             deserialize: typeof query_deserialize;
-                            get: (path_: any) => {
+                            get(path_?: any): {
                                     [key: string]: string;
                             };
                     };
@@ -52,7 +52,7 @@ declare module 'ruta/ruta' {
                     query: {
                             serialize: typeof query_serialize;
                             deserialize: typeof query_deserialize;
-                            get: (path_: any) => {
+                            get(path_?: any): {
                                     [key: string]: string;
                             };
                     };

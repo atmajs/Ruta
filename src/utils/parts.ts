@@ -1,7 +1,7 @@
 import { query_deserialize, query_serialize } from './query'
 import { path_split, path_join } from './path'
 
-export interface UrlSegments {
+export interface IUrlSegments {
     path: string[]
     query: {
         [key: string]: string
@@ -12,8 +12,8 @@ export interface UrlSegments {
  *    '/foo/bar?a=b' =>
  *    { path: ['foo', 'bar'], query: { a: 'b' } }
  */
-export function parts_serialize(parts: UrlSegments) {
-    var path = path_join(parts.path);
+export function parts_serialize(parts: IUrlSegments) {
+    let path = path_join(parts.path);
 
     if (parts.query == null)
         return path;
@@ -24,11 +24,11 @@ export function parts_serialize(parts: UrlSegments) {
         ;
 };
 
-export function parts_deserialize(url: string): UrlSegments {
-    var query = url.indexOf('?'),
-        path = query === -1
-            ? url
-            : url.substring(0, query);
+export function parts_deserialize(url: string): IUrlSegments {
+    let query = url.indexOf('?');
+    let path = query === -1
+        ? url
+        : url.substring(0, query);
 
     return {
         path: path_split(path),

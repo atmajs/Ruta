@@ -1,7 +1,7 @@
 import { log_error } from './log'
 
 export function query_deserialize (query: string, delimiter: string = '&') {
-    let obj = {};
+    let obj = Object.create(null);
     let parts = query.split(delimiter);
 
     for (let i = 0, imax = parts.length; i < imax; i++) {
@@ -53,8 +53,11 @@ function obj_setProperty(obj, property: string, value) {
     let imax = chain.length;
     for (; i < imax - 1; i++) {
         let key = chain[i];
+        if (key === '' || key === '__proto__' || key === 'prototype') {
+            continue; // skip empty or '__proto__' keys
+        }
         if (obj[key] == null) {
-            obj[key] = {};
+            obj[key] = Object.create(null);;
         }
         obj = obj[key];
     }

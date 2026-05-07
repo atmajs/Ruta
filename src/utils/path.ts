@@ -2,24 +2,11 @@ import { query_deserialize, query_serialize } from './query'
 import { parts_serialize } from './parts'
 
 export function path_normalize(str: string): string {
-    let length = str.length;
-    
-    let i = 0;
-    for (; i < length; i++) {
-        if (str[i] === '/') {
-            continue;
-        }
-        break;
-    }
-
-    let j = length - 1;
-    for (; j > i; j--) {
-        if (str[j] === '/') {
-            continue;
-        }
-        break;
-    }
-    return str.substring(i, j + 1);
+    return str
+        .replace(/^\/+/g, '')
+        .replace(/\/+$/g, '')
+        .replace(/[\/]{2,}/g, '/')
+        ;
 };
 
 export function path_split(path: string): string[] {

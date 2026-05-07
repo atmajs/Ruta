@@ -1,4 +1,4 @@
-import { parts_deserialize, parts_serialize, UrlSegments } from '../utils/parts'
+import { parts_deserialize, parts_serialize, IUrlSegments } from '../utils/parts'
 import { rgx_parsePartWithRegExpAlias } from '../utils/rgx'
 import { route_parsePath } from './route_utils'
 import { Route }from './Route';
@@ -30,7 +30,7 @@ export function route_matchAll(url: string, routes: Route[], method: string = nu
     return out;
 };
 
-export function route_isMatch(parts: string | UrlSegments, route: Route, currentMethod: string = null) {
+export function route_isMatch(parts: string | IUrlSegments, route: Route, currentMethod: string = null) {
 
     if (currentMethod != null &&
         route.method != null &&

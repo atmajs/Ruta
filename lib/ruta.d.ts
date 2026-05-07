@@ -61,7 +61,7 @@ declare module 'ruta/ruta' {
 }
 
 declare module 'ruta/utils/query' {
-    export function query_deserialize(query: string, delimiter?: string): {};
+    export function query_deserialize(query: string, delimiter?: string): any;
     export function query_serialize(params: any, delimiter: any): string;
 }
 
@@ -90,7 +90,7 @@ declare module 'ruta/route/RouteCollection' {
         clear(): this;
         static parse(definition: string, path: string): {
             path: string;
-            params: {};
+            params: any;
         };
     }
 }

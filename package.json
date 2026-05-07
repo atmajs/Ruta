@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.71",
+    "version": "0.2.72",
     "main": "./lib/ruta.js",
     "types": "./lib/ruta.d.ts",
     "repository": {
@@ -16,7 +16,7 @@
         "@types/jquery": "^3.2.12",
         "@types/sinon": "^2.3.3",
         "app-bundler": "0.0.89",
-        "atma": "^0.12.18",
+        "atma": "^0.12.28",
         "atma-io": "^1.2.29",
         "atma-loader-ts": "^1.1.12",
         "dts-bundle": "^0.7.3"
